@@ -309,7 +309,7 @@ Using unknown keywords is an error.
     param-property = "{" param-alpha [ ":" param-alpha [ param-alpha ] ] *( "," param-property ) "}"
 
 
-[rationale]: https://github.com/Teamwork/kommentaar#motivation-and-rationale
+[rationale]: https://github.com/zgoat/kommentaar#motivation-and-rationale
 [rfc2119]: https://tools.ietf.org/html/rfc2119
 [rfc5234]: https://tools.ietf.org/html/rfc5234
 [json-schema-format]: https://tools.ietf.org/html/draft-handrews-json-schema-validation-01#section-7.3

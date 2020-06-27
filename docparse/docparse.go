@@ -1,5 +1,5 @@
 // Package docparse parses the comments.
-package docparse // import "github.com/teamwork/kommentaar/docparse"
+package docparse
 
 import (
 	"fmt"

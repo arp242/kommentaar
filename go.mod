@@ -1,6 +1,6 @@
-module github.com/teamwork/kommentaar
+module github.com/zgoat/kommentaar
 
-go 1.12
+go 1.13
 
 require (
 	arp242.net/sconfig v1.2.1

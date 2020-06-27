@@ -1,6 +1,4 @@
-[![GoDoc](https://godoc.org/github.com/teamwork/kommentaar?status.svg)](https://godoc.org/github.com/teamwork/kommentaar)
-[![Build Status](https://travis-ci.com/Teamwork/kommentaar.svg?branch=master)](https://travis-ci.com/Teamwork/kommentaar)
-[![codecov](https://codecov.io/gh/Teamwork/kommentaar/branch/master/graph/badge.svg)](https://codecov.io/gh/Teamwork/kommentaar)
+[![GoDoc](https://godoc.org/github.com/zgoat/kommentaar?status.svg)](https://godoc.org/github.com/zgoat/kommentaar)
 
 Kommentaar generates documentation for Go APIs.
 
@@ -27,7 +25,7 @@ Using the tool
 
 Install it:
 
-    $ go get github.com/teamwork/kommentaar
+    $ go get github.com/zgoat/kommentaar
 
 Parse one package:
 
@@ -44,7 +42,7 @@ making development/proofreading easier.
 
 See `kommentaar -h` for the full list of options.
 
-You can also the [Go API](https://godoc.org/github.com/teamwork/kommentaar), for
+You can also the [Go API](https://godoc.org/github.com/zgoat/kommentaar), for
 example to serve documentation in an HTTP endpoint.
 
 Syntax

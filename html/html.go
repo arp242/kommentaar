@@ -1,5 +1,5 @@
 // Package html outputs to HTML.
-package html // import "github.com/teamwork/kommentaar/html"
+package html
 
 import (
 	"fmt"
@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/teamwork/kommentaar/docparse"
+	"github.com/zgoat/kommentaar/docparse"
 	yaml "gopkg.in/yaml.v2"
 )
 

@@ -1,4 +1,4 @@
-package main // import "github.com/teamwork/kommentaar"
+package main
 
 import (
 	"flag"
@@ -8,9 +8,9 @@ import (
 	"runtime"
 	"runtime/pprof"
 
-	"github.com/teamwork/kommentaar/docparse"
-	"github.com/teamwork/kommentaar/kconfig"
-	"github.com/teamwork/kommentaar/openapi2"
+	"github.com/zgoat/kommentaar/docparse"
+	"github.com/zgoat/kommentaar/kconfig"
+	"github.com/zgoat/kommentaar/openapi2"
 )
 
 func main() {

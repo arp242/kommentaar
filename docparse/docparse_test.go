@@ -472,7 +472,7 @@ func TestGetReference(t *testing.T) {
 	}{
 		{"testObject", "", &Reference{
 			Name:    "testObject",
-			Package: "github.com/teamwork/kommentaar/docparse",
+			Package: "github.com/zgoat/kommentaar/docparse",
 			File:    "", // TODO
 			Lookup:  "docparse.testObject",
 			Context: "req",

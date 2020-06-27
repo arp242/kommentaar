@@ -10,11 +10,11 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/teamwork/kommentaar/docparse"
-	"github.com/teamwork/kommentaar/kconfig"
-	"github.com/teamwork/kommentaar/openapi2"
 	"github.com/teamwork/test"
 	"github.com/teamwork/test/diff"
+	"github.com/zgoat/kommentaar/docparse"
+	"github.com/zgoat/kommentaar/kconfig"
+	"github.com/zgoat/kommentaar/openapi2"
 )
 
 // Just basic sanity test to make sure it doesn't error out or something.
