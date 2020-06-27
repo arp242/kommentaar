@@ -295,20 +295,8 @@ func (err ErrNotStruct) Error() string {
 // A GetReference("Foo", "") call will add two entries to prog.References: Foo
 // and Bar (but only Foo is returned).
 func GetReference(prog *Program, context string, isEmbed bool, lookup, filePath string) (*Reference, error) {
-	wrapper := ""
-	isSlice := false
-	if strings.HasPrefix(lookup, "[") && strings.HasSuffix(lookup, "]") && strings.Contains(lookup, ":") {
-		wrapper = strings.TrimPrefix(strings.Split(lookup, ":")[0], "[")
-		lookup = strings.TrimSuffix(strings.Split(lookup, ":")[1], "]")
-	}
-
-	if strings.HasPrefix(lookup, "[") && string(lookup[1]) == "]" {
-		isSlice = true
-		lookup = lookup[2:]
-	}
-
 	dbg("getReference: lookup: %#v -> filepath: %#v", lookup, filePath)
-	name, pkg := ParseLookup(lookup, filePath)
+	name, pkg := parseLookup(lookup, filePath)
 	dbg("getReference: pkg: %#v -> name: %#v", pkg, name)
 
 	// Already parsed this one, don't need to do it again.
@@ -334,12 +322,6 @@ func GetReference(prog *Program, context string, isEmbed bool, lookup, filePath 
 	case *ast.InterfaceType:
 		// dummy StructType, we'll just be using the doc from the interface.
 		st = &ast.StructType{Fields: &ast.FieldList{}}
-	case *ast.ArrayType:
-		arLookup := fmt.Sprintf("[]%v.%v", strings.Split(lookup, ".")[0], exprToString(typ.Elt))
-		if wrapper != "" {
-			arLookup = fmt.Sprintf("[%v:%v]", wrapper, arLookup)
-		}
-		return GetReference(prog, context, isEmbed, arLookup, filePath)
 	default:
 		return nil, ErrNotStruct{ts, fmt.Sprintf(
 			"%v is not a struct or interface but a %T", name, ts.Type)}
@@ -352,13 +334,9 @@ func GetReference(prog *Program, context string, isEmbed bool, lookup, filePath 
 		File:    foundPath,
 		Context: context,
 		IsEmbed: isEmbed,
-		IsSlice: isSlice,
 	}
 	if ts.Doc != nil {
 		ref.Info = strings.TrimSpace(ts.Doc.Text())
-	}
-	if wrapper != "" {
-		ref.Wrapper = wrapper
 	}
 
 	var tagName string
@@ -392,7 +370,7 @@ func GetReference(prog *Program, context string, isEmbed bool, lookup, filePath 
 				err = resolveType(prog, context, false, t, "", pkg)
 			case *ast.StarExpr:
 				ex, _ := t.X.(*ast.Ident)
-				err = resolveType(prog, context, false, ex, "", pkg)
+				err = resolveType(prog, context, true, ex, "", pkg)
 			}
 
 			if err != nil {
@@ -473,8 +451,8 @@ func GetReference(prog *Program, context string, isEmbed bool, lookup, filePath 
 
 	// Add in embedded structs with a tag.
 	for _, n := range nestedTagged {
-		ename := strings.Title(goutil.TagName(n, tagName))
-		n.Names = []*ast.Ident{{
+		ename := goutil.TagName(n, tagName)
+		n.Names = []*ast.Ident{&ast.Ident{
 			Name: ename,
 		}}
 		ref.Fields = append(ref.Fields, Param{
@@ -501,25 +479,6 @@ func GetReference(prog *Program, context string, isEmbed bool, lookup, filePath 
 				}
 			}
 		}
-	}
-
-	if ref.IsSlice {
-		sliceSchema := &Schema{
-			Type:  "array",
-			Items: ref.Schema,
-		}
-		ref.Schema = sliceSchema
-	}
-
-	if ref.Wrapper != "" {
-		wrappedSchema := &Schema{
-			Title:      ref.Name,
-			Type:       "object",
-			Properties: map[string]*Schema{},
-		}
-
-		wrappedSchema.Properties[ref.Wrapper] = ref.Schema
-		ref.Schema = wrappedSchema
 	}
 
 	prog.References[ref.Lookup] = ref
@@ -587,7 +546,7 @@ start:
 	case *ast.MapType:
 		msw := typ.Value
 
-	mapStart: // I feel dirty doing this...  :/
+	mapStart:
 		switch elementType := msw.(type) {
 
 		// Ignore *
@@ -666,12 +625,12 @@ func resolveType(prog *Program, context string, isEmbed bool, typ *ast.Ident, fi
 	return err
 }
 
-// ParseLookup for the package and name, if lookup is an imported path e.g
+// parseLookup for the package and name, if lookup is an imported path e.g
 // models.Foo then:
 // pkg: models, name: Foo
 // in the case of current package the filePath is used, e.g:
-// pkg: Dir(filePath), name: Foofunc ParseLookup(lookup string, filePath string) (name, pkg string) {
-func ParseLookup(lookup string, filePath string) (name, pkg string) {
+// pkg: Dir(filePath), name: Foo
+func parseLookup(lookup string, filePath string) (name, pkg string) {
 	if c := strings.LastIndex(lookup, "."); c > -1 {
 		// imported path: models.Foo
 		return lookup[c+1:], lookup[:c]

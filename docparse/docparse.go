@@ -149,8 +149,6 @@ type Reference struct {
 	Info    string  // Comment of the struct itself.
 	Context string  // Context we found it: path, query, form, req, resp.
 	IsEmbed bool    // Is an embedded struct.
-	IsSlice bool    // Is a slice
-	Wrapper string  // Name of json obj to wrap Schema in
 	Schema  *Schema // JSON schema.
 
 	Fields []Param // Struct fields.
@@ -358,7 +356,7 @@ func parseComment(prog *Program, comment, pkgPath, filePath string) ([]*Endpoint
 			}
 
 			lookup := m[1:] // strip "$"
-			name, pkg := ParseLookup(lookup, filePath)
+			name, pkg := parseLookup(lookup, filePath)
 			vs, _, _, err := findValue(filePath, pkg, name)
 			if err != nil {
 				expandErr = fmt.Errorf("%s: findValue: %v", m, err)
