@@ -28,8 +28,6 @@ type Schema struct {
 	Maximum     int      `json:"maximum,omitempty" yaml:"maximum,omitempty"`
 	Readonly    *bool    `json:"readOnly,omitempty" yaml:"readOnly,omitempty"`
 
-	FieldWhitelist []string `json:"field-whitelist,omitempty" yaml:"field-whitelist,omitempty"`
-
 	// Store array items; for primitives:
 	//   "items": {"type": "string"}
 	// or custom types:
@@ -190,13 +188,6 @@ func setTags(name, fName string, p *Schema, tags []string) error {
 				err := readAndUnmarshalSchemaFile(p.CustomSchema, p)
 				if err != nil {
 					return fmt.Errorf("custom schema: %v", err)
-				}
-			case strings.HasPrefix(t, "field-whitelist: "):
-				for _, e := range strings.Split(t[17:], " ") {
-					e = strings.TrimSpace(e)
-					if e != "" {
-						p.FieldWhitelist = append(p.FieldWhitelist, e)
-					}
 				}
 			default:
 				return fmt.Errorf("unknown parameter property for %#v: %#v",
