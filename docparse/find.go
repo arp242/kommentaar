@@ -60,6 +60,7 @@ func FindComments(w io.Writer, prog *Program) error {
 					if e == nil || e[0] == nil {
 						continue
 					}
+
 					e[0].Pos = fset.Position(c.Pos())
 					e[0].End = fset.Position(c.End())
 
@@ -124,6 +125,7 @@ func findType(currentFile, pkgPath, name string) (
 	err error,
 ) {
 	dbg("findType: file: %#v, pkgPath: %#v, name: %#v", currentFile, pkgPath, name)
+
 	resolvedPath, pkg, err := resolvePackage(currentFile, pkgPath)
 	if err != nil {
 		return nil, "", "", fmt.Errorf("could not resolve package: %v", err)
@@ -585,6 +587,7 @@ start:
 	if x, _ := MapType(prog, lookup); x != "" {
 		return lookup, nil
 	}
+
 	if _, ok := prog.References[lookup]; !ok {
 		err := resolveType(prog, context, isEmbed, name, filePath, pkg)
 		if err != nil {

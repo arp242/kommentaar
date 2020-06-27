@@ -298,7 +298,7 @@ func parseComment(prog *Program, comment, pkgPath, filePath string) ([]*Endpoint
 		if req != nil {
 			pastDesc = true
 			if e.Request.Body != nil {
-				return nil, i, fmt.Errorf("request body already present")
+				return nil, i, fmt.Errorf("Request Body already present")
 			}
 
 			e.Request.ContentType = prog.Config.DefaultRequestCt
