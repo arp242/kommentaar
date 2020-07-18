@@ -36,12 +36,15 @@ type Schema struct {
 	// Store structs.
 	Properties map[string]*Schema `json:"properties,omitempty"`
 
+	// Order of the properties in the struct; contains the key of the Properties
+	// field.
+	PropertyOrder []string `json:"-"`
+
 	// We will not forbid to add propreties to an struct, so instead of using
 	// the bool value, we use the schema definition
 	AdditionalProperties *Schema `json:"additionalProperties,omitempty"`
 
-	OmitDoc      bool   `json:"-"` // {omitdoc}
-	CustomSchema string `json:"-"` // {schema: path}
+	OmitDoc bool `json:"-"` // {omitdoc}
 }
 
 // Convert a struct to a JSON schema.
@@ -82,6 +85,7 @@ func structToSchema(prog *Program, name, tagName string, ref Reference) (*Schema
 				name, ref.Lookup)
 		}
 
+		schema.PropertyOrder = append(schema.PropertyOrder, name)
 		schema.Properties[name] = prop
 	}
 
@@ -182,13 +186,6 @@ func setTags(name, fName string, p *Schema, tags []string) error {
 					}
 					p.Maximum = int(n)
 				}
-
-			case strings.HasPrefix(t, "schema: "):
-				p.CustomSchema = filepath.Join(filepath.Dir(fName), t[8:])
-				err := readAndUnmarshalSchemaFile(p.CustomSchema, p)
-				if err != nil {
-					return fmt.Errorf("custom schema: %v", err)
-				}
 			default:
 				return fmt.Errorf("unknown parameter property for %#v: %#v",
 					name, t)
@@ -215,11 +212,6 @@ func fieldToSchema(prog *Program, fName, tagName string, ref Reference, f *ast.F
 	err := setTags(fName, ref.File, &p, tags)
 	if err != nil {
 		return nil, err
-	}
-
-	// Don't need to carry on if we're loading our own schema.
-	if p.CustomSchema != "" {
-		return &p, nil
 	}
 
 	pkg := ref.Package
@@ -304,6 +296,7 @@ start:
 			}
 
 			p.Properties[propName] = prop
+			p.PropertyOrder = append(p.PropertyOrder, propName)
 		}
 
 	// An expression followed by a selector, e.g. "pkg.foo"

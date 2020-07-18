@@ -8,21 +8,76 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"strings"
 
 	"github.com/zgoat/kommentaar/docparse"
+	"zgo.at/zstd/zstring"
 )
 
 var funcMap = template.FuncMap{
 	"add":    func(a, b int) int { return a + b },
 	"status": func(c int) string { return http.StatusText(c) },
-	"schema": func(in interface{}) string {
-		// TODO: link ref?
-		d, err := json.MarshalIndent(in, "", "    ")
+	"schema": formatSchema,
+}
+
+var e = template.HTMLEscapeString
+
+func formatSchema(schema *docparse.Schema) template.HTML {
+	if schema.OmitDoc {
+		return ""
+	}
+
+	if schema.Type != "object" {
+		d, err := json.MarshalIndent(schema, "", "    ")
 		if err != nil {
-			return fmt.Sprintf("json.Marshal error: %v", err)
+			return template.HTML(fmt.Sprintf("json.Marshal error: %v", err))
 		}
-		return string(d)
-	},
+		return template.HTML(template.HTMLEscaper(d))
+	}
+
+	b := new(strings.Builder)
+	for _, name := range schema.PropertyOrder {
+		p := schema.Properties[name]
+		if p.OmitDoc {
+			continue
+		}
+
+		// TODO:
+		// Enum        []string `json:"enum,omitempty"`
+		// Default     string   `json:"default,omitempty"`
+		// Minimum     int      `json:"minimum,omitempty"`
+		// Maximum     int      `json:"maximum,omitempty"`
+		// Readonly    *bool    `json:"readOnly,omitempty"`
+
+		required := zstring.Contains(schema.Required, name)
+
+		fmt.Fprintf(b, "<h4>%s <sup>", name)
+		if p.Type == "object" {
+			fmt.Fprintf(b, `<a href="#%s">%[1]s</a>`, p.Reference)
+		} else {
+			b.WriteString(p.Type)
+		}
+
+		if p.Format != "" {
+			fmt.Fprintf(b, " [format: %s]", p.Format)
+		}
+		if required {
+			b.WriteString(" [required]")
+		}
+		if p.Type == "array" {
+			if p.Items.Reference != "" {
+				fmt.Fprintf(b, ` [type: <a href="#%s">%[1]s</a>]`, p.Items.Reference)
+			} else {
+				fmt.Fprintf(b, " [type: %s]", p.Items.Type)
+			}
+		}
+
+		b.WriteString("</sup></h4>\n")
+
+		fmt.Fprintf(b, "<p>%s</p>\n", e(p.Description))
+	}
+
+	return template.HTML(b.String())
 }
 
 var mainTpl = template.Must(template.New("mainTpl").Funcs(funcMap).Parse(`
@@ -117,6 +172,11 @@ var mainTpl = template.Must(template.New("mainTpl").Funcs(funcMap).Parse(`
 
 		.endpoint-info p {
 			max-width: 55em;
+		}
+
+		.model p {
+			margin-left: 2em;
+			white-space: pre-line;
 		}
 
 		.resource {
@@ -234,9 +294,9 @@ var mainTpl = template.Must(template.New("mainTpl").Funcs(funcMap).Parse(`
 			{{$k}}
 			<a class="permalink" href="#{{$k}}">§</a>
 		</h3>
-		<div class="endpoint">
-			<p>{{$v.Info}}</p>
-			<pre>{{$v.Schema|schema}}</pre>
+		<div class="endpoint model">
+			<p class="info">{{$v.Info}}</p>
+			{{$v.Schema|schema}}
 		</div>
 	{{end}}
 

@@ -266,9 +266,6 @@ Supported parameters:
 - `range: n-n`      – parameter must be within this range; either number can be
                       `0` to indicate there is no lower or upper limit (only
                       useful for numeric parameters).
-- `schema: path`    – use a JSON schema file (as JSON as YAML) to describe this
-                      parameter, ignoring the Kommentaar directives for it. The
-                      path is relative to the file in which it's found.
 - Any [format from JSON schema][json-schema-format].
 
 Examples:
