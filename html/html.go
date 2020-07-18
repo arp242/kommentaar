@@ -42,13 +42,6 @@ func formatSchema(schema *docparse.Schema) template.HTML {
 			continue
 		}
 
-		// TODO:
-		// Enum        []string `json:"enum,omitempty"`
-		// Default     string   `json:"default,omitempty"`
-		// Minimum     int      `json:"minimum,omitempty"`
-		// Maximum     int      `json:"maximum,omitempty"`
-		// Readonly    *bool    `json:"readOnly,omitempty"`
-
 		required := zstring.Contains(schema.Required, name)
 
 		fmt.Fprintf(b, "<h4>%s <sup>", name)
@@ -64,6 +57,23 @@ func formatSchema(schema *docparse.Schema) template.HTML {
 		if required {
 			b.WriteString(" [required]")
 		}
+		if p.Readonly != nil && *p.Readonly {
+			b.WriteString(" [readonly]")
+		}
+		if p.Default != "" {
+			fmt.Fprintf(b, " [default: %s]", p.Default)
+		}
+		if p.Minimum != 0 || p.Maximum != 0 {
+			fmt.Fprintf(b, " [range: %d-%d]", p.Minimum, p.Maximum)
+		}
+		if len(p.Enum) > 0 {
+			enum := make([]string, len(p.Enum))
+			for i := range p.Enum {
+				enum[i] = fmt.Sprintf("%q", p.Enum[i])
+			}
+			fmt.Fprintf(b, " [enum: %s]", strings.Join(enum, ", "))
+		}
+
 		if p.Type == "array" {
 			if p.Items.Reference != "" {
 				fmt.Fprintf(b, ` [type: <a href="#%s">%[1]s</a>]`, p.Items.Reference)

@@ -214,6 +214,15 @@ func fieldToSchema(prog *Program, fName, tagName string, ref Reference, f *ast.F
 		return nil, err
 	}
 
+	// Special case of ,readonly from zgo.at/json
+	if f.Tag != nil {
+		_, attr := zgo.Tag(f, "json")
+		if zstring.Contains(attr, "readonly") {
+			t := true
+			p.Readonly = &t
+		}
+	}
+
 	pkg := ref.Package
 	var name *ast.Ident
 
