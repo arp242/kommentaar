@@ -2,6 +2,7 @@
 package html
 
 import (
+	"encoding/json"
 	"fmt"
 	"html/template"
 	"io"
@@ -9,7 +10,6 @@ import (
 	"os"
 
 	"github.com/zgoat/kommentaar/docparse"
-	yaml "gopkg.in/yaml.v2"
 )
 
 var funcMap = template.FuncMap{
@@ -17,9 +17,9 @@ var funcMap = template.FuncMap{
 	"status": func(c int) string { return http.StatusText(c) },
 	"schema": func(in interface{}) string {
 		// TODO: link ref?
-		d, err := yaml.Marshal(in)
+		d, err := json.Marshal(in)
 		if err != nil {
-			return fmt.Sprintf("yaml.Marshal error: %v", err)
+			return fmt.Sprintf("json.Marshal error: %v", err)
 		}
 		return string(d)
 	},

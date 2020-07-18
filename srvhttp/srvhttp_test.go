@@ -15,9 +15,9 @@ func TestServe(t *testing.T) {
 	}
 
 	rr := httptest.NewRecorder()
-	YAML(args)(rr, r)
+	JSON(args)(rr, r)
 	if len(rr.Body.String()) < 500 {
-		t.Error("body too short for YAML?")
+		t.Error("body too short for JSON?")
 	}
 
 	rr = httptest.NewRecorder()
@@ -38,16 +38,16 @@ func TestFromFile(t *testing.T) {
 	args := Args{
 		Packages: []string{"../example/..."},
 		NoScan:   true,
-		YAMLFile: "../testdata/openapi2/src/blank-line/want.yaml",
+		JSONFile: "../testdata/openapi2/src/blank-line/want.json",
 	}
 
-	want, err := ioutil.ReadFile("../testdata/openapi2/src/blank-line/want.yaml")
+	want, err := ioutil.ReadFile("../testdata/openapi2/src/blank-line/want.json")
 	if err != nil {
 		t.Fatalf("could not read file: %v", err)
 	}
 
 	rr := httptest.NewRecorder()
-	YAML(args)(rr, r)
+	JSON(args)(rr, r)
 	d := diff.TextDiff(string(want), rr.Body.String())
 	if d != "" {
 		t.Fatalf("wrong output\n%v", d)

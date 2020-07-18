@@ -61,7 +61,7 @@ func Load(prog *docparse.Program, file string) error {
 
 	// Set a default output.
 	if prog.Config.Output == nil {
-		prog.Config.Output = openapi2.WriteYAML
+		prog.Config.Output = openapi2.WriteJSONIndent
 	}
 
 	if prog.Config.StructTag == "" {
@@ -75,8 +75,6 @@ func Load(prog *docparse.Program, file string) error {
 func Output(out, addr string) (func(io.Writer, *docparse.Program) error, error) {
 	var outFunc func(io.Writer, *docparse.Program) error
 	switch strings.ToLower(out) {
-	case "openapi2-yaml":
-		outFunc = openapi2.WriteYAML
 	case "openapi2-json":
 		outFunc = openapi2.WriteJSON
 	case "openapi2-jsonindent":

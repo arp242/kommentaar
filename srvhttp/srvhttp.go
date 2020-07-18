@@ -20,30 +20,8 @@ type Args struct {
 	Packages []string // Packages to scan.
 	Config   string   // Kommentaar config file.
 	NoScan   bool     // Don't scan the paths, but instead load and output one of the *File.
-	YAMLFile string
 	JSONFile string
 	HTMLFile string
-}
-
-// YAML outputs as OpenAPI2 YAML.
-func YAML(args Args) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		out, err := run(args, openapi2.WriteYAML, args.YAMLFile)
-		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			_, wErr := fmt.Fprintf(w, "Error: %v", err)
-			if wErr != nil {
-				_, _ = fmt.Fprintf(os.Stderr, "could not write response: %v", wErr)
-			}
-			return
-		}
-
-		w.Header().Set("Content-Type", "text/plain")
-		_, wErr := fmt.Fprint(w, out)
-		if wErr != nil {
-			_, _ = fmt.Fprintf(os.Stderr, "could not write response: %v", wErr)
-		}
-	}
 }
 
 // JSON outputs as OpenAPI2 JSON.

@@ -14,99 +14,98 @@ import (
 	"github.com/imdario/mergo"
 	"github.com/teamwork/utils/goutil"
 	"github.com/zgoat/kommentaar/docparse"
-	yaml "gopkg.in/yaml.v2"
 )
 
 type (
 	// OpenAPI output.
 	OpenAPI struct {
-		Swagger string `json:"swagger" yaml:"swagger"`
-		Info    Info   `json:"info" yaml:"info"`
+		Swagger string `json:"swagger"`
+		Info    Info   `json:"info"`
 
 		// TODO: do we need this? will have to come from config
-		Host     string   `json:"host,omitempty" yaml:"host,omitempty"`
-		BasePath string   `json:"basePath,omitempty" yaml:"basePath,omitempty"`
-		Schemes  []string `json:"schemes,omitempty" yaml:"schemes,omitempty"`
-		Consumes []string `json:"consumes,omitempty" yaml:"consumes,omitempty"`
-		Produces []string `json:"produces,omitempty" yaml:"produces,omitempty"`
+		Host     string   `json:"host,omitempty"`
+		BasePath string   `json:"basePath,omitempty"`
+		Schemes  []string `json:"schemes,omitempty"`
+		Consumes []string `json:"consumes,omitempty"`
+		Produces []string `json:"produces,omitempty"`
 
-		Tags        []Tag                      `json:"tags,omitempty" yaml:"tags,omitempty"`
-		Paths       map[string]*Path           `json:"paths" yaml:"paths"`
-		Definitions map[string]docparse.Schema `json:"definitions" yaml:"definitions"`
+		Tags        []Tag                      `json:"tags,omitempty"`
+		Paths       map[string]*Path           `json:"paths"`
+		Definitions map[string]docparse.Schema `json:"definitions"`
 	}
 
 	// Info provides metadata about the API.
 	Info struct {
-		Title       string  `json:"title,omitempty" yaml:"title,omitempty"`
-		Description string  `json:"description,omitempty" yaml:"description,omitempty"`
-		Version     string  `json:"version,omitempty" yaml:"version,omitempty"`
-		Contact     Contact `json:"contact,omitempty" yaml:"contact,omitempty"`
+		Title       string  `json:"title,omitempty"`
+		Description string  `json:"description,omitempty"`
+		Version     string  `json:"version,omitempty"`
+		Contact     Contact `json:"contact,omitempty"`
 	}
 
 	// Contact provides contact information for the exposed API.
 	Contact struct {
-		Name  string `json:"name,omitempty" yaml:"name,omitempty"`
-		URL   string `json:"url,omitempty" yaml:"url,omitempty"`
-		Email string `json:"email,omitempty" yaml:"email,omitempty"`
+		Name  string `json:"name,omitempty"`
+		URL   string `json:"url,omitempty"`
+		Email string `json:"email,omitempty"`
 	}
 
 	// Parameter describes a single operation parameter.
 	Parameter struct {
-		Name        string           `json:"name" yaml:"name"`
-		In          string           `json:"in" yaml:"in"` // query, header, path, cookie
-		Description string           `json:"description,omitempty" yaml:"description,omitempty"`
-		Type        string           `json:"type,omitempty" yaml:"type,omitempty"`
-		Items       *docparse.Schema `json:"items,omitempty" yaml:"items,omitempty"`
-		Format      string           `json:"format,omitempty" yaml:"format,omitempty"`
-		Required    bool             `json:"required,omitempty" yaml:"required,omitempty"`
-		Readonly    *bool            `json:"readOnly,omitempty" yaml:"readOnly,omitempty"`
-		Enum        []string         `json:"enum,omitempty" yaml:"enum,omitempty"`
-		Default     string           `json:"default,omitempty" yaml:"default,omitempty"`
-		Minimum     int              `json:"minimum,omitempty" yaml:"minimum,omitempty"`
-		Maximum     int              `json:"maximum,omitempty" yaml:"maximum,omitempty"`
-		Schema      *docparse.Schema `json:"schema,omitempty" yaml:"schema,omitempty"`
+		Name        string           `json:"name"`
+		In          string           `json:"in"` // query, header, path, cookie
+		Description string           `json:"description,omitempty"`
+		Type        string           `json:"type,omitempty"`
+		Items       *docparse.Schema `json:"items,omitempty"`
+		Format      string           `json:"format,omitempty"`
+		Required    bool             `json:"required,omitempty"`
+		Readonly    *bool            `json:"readOnly,omitempty"`
+		Enum        []string         `json:"enum,omitempty"`
+		Default     string           `json:"default,omitempty"`
+		Minimum     int              `json:"minimum,omitempty"`
+		Maximum     int              `json:"maximum,omitempty"`
+		Schema      *docparse.Schema `json:"schema,omitempty"`
 	}
 
 	// Tag adds metadata to a single tag that is used by the Operation type.
 	Tag struct {
-		Name string `json:"name" yaml:"name"`
+		Name string `json:"name"`
 	}
 
 	// Path describes the operations available on a single path.
 	Path struct {
-		Ref    string     `json:"ref,omitempty" yaml:"ref,omitempty"`
-		Get    *Operation `json:"get,omitempty" yaml:"get,omitempty"`
-		Post   *Operation `json:"post,omitempty" yaml:"post,omitempty"`
-		Put    *Operation `json:"put,omitempty" yaml:"put,omitempty"`
-		Patch  *Operation `json:"patch,omitempty" yaml:"patch,omitempty"`
-		Delete *Operation `json:"delete,omitempty" yaml:"delete,omitempty"`
-		Head   *Operation `json:"head,omitempty" yaml:"head,omitempty"`
+		Ref    string     `json:"ref,omitempty"`
+		Get    *Operation `json:"get,omitempty"`
+		Post   *Operation `json:"post,omitempty"`
+		Put    *Operation `json:"put,omitempty"`
+		Patch  *Operation `json:"patch,omitempty"`
+		Delete *Operation `json:"delete,omitempty"`
+		Head   *Operation `json:"head,omitempty"`
 	}
 
 	// Operation describes a single API operation on a path.
 	Operation struct {
-		OperationID string           `json:"operationId" yaml:"operationId"`
-		Tags        []string         `json:"tags,omitempty" yaml:"tags,omitempty"`
-		Summary     string           `json:"summary,omitempty" yaml:"summary,omitempty"`
-		Description string           `json:"description,omitempty" yaml:"description,omitempty"`
-		Consumes    []string         `json:"consumes,omitempty" yaml:"consumes,omitempty"`
-		Produces    []string         `json:"produces,omitempty" yaml:"produces,omitempty"`
-		Parameters  []Parameter      `json:"parameters,omitempty" yaml:"parameters,omitempty"`
-		Responses   map[int]Response `json:"responses" yaml:"responses"`
+		OperationID string           `json:"operationId"`
+		Tags        []string         `json:"tags,omitempty"`
+		Summary     string           `json:"summary,omitempty"`
+		Description string           `json:"description,omitempty"`
+		Consumes    []string         `json:"consumes,omitempty"`
+		Produces    []string         `json:"produces,omitempty"`
+		Parameters  []Parameter      `json:"parameters,omitempty"`
+		Responses   map[int]Response `json:"responses"`
 
-		Extend map[string]interface{} `json:"-" yaml:"-"`
+		Extend map[string]interface{} `json:"-"`
 	}
 
 	// Reference other components in the specification, internally and
 	// externally.
 	Reference struct {
-		Ref string `json:"$ref" yaml:"$ref"`
+		Ref string `json:"$ref"`
 	}
 
 	// Response describes a single response from an API Operation.
 	Response struct {
-		Description string           `json:"description,omitempty" yaml:"description,omitempty"`
-		Schema      *docparse.Schema `json:"schema,omitempty" yaml:"schema,omitempty"`
+		Description string           `json:"description,omitempty"`
+		Schema      *docparse.Schema `json:"schema,omitempty"`
 	}
 )
 
@@ -144,27 +143,6 @@ func (o *Operation) MarshalJSON() ([]byte, error) {
 		return nil, err
 	}
 	return json.Marshal(m)
-}
-
-// MarshalYAML implements the yaml.Marshaler interface.
-func (o *Operation) MarshalYAML() (interface{}, error) {
-	if o.Extend == nil {
-		// no need for converting to map, use alias to avoid this method
-		// being called endlessly
-		type Alias Operation
-		return (*Alias)(o), nil
-	}
-
-	m, err := o.toMap()
-	if err != nil {
-		return nil, fmt.Errorf("toMap: %v", err)
-	}
-	return &m, nil
-}
-
-// WriteYAML writes w as YAML.
-func WriteYAML(w io.Writer, prog *docparse.Program) error {
-	return write("yaml", w, prog)
 }
 
 // WriteJSON writes to w as JSON.
@@ -461,8 +439,6 @@ func write(outFormat string, w io.Writer, prog *docparse.Program) error {
 		d, err = json.MarshalIndent(&out, "", "  ")
 	case "json":
 		d, err = json.Marshal(&out)
-	case "yaml":
-		d, err = yaml.Marshal(&out)
 	default:
 		err = fmt.Errorf("unknown format: %#v", outFormat)
 	}

@@ -12,7 +12,7 @@ func TestExample(t *testing.T) {
 	prog.Config.Title = "Test Example"
 	prog.Config.Version = "v1"
 	prog.Config.Packages = []string{"../example/..."}
-	prog.Config.Output = WriteYAML
+	prog.Config.Output = WriteJSONIndent
 
 	w := bytes.NewBufferString("")
 	err := docparse.FindComments(w, prog)

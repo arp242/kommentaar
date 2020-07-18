@@ -11,38 +11,37 @@ import (
 
 	"github.com/teamwork/utils/goutil"
 	"github.com/teamwork/utils/sliceutil"
-	yaml "gopkg.in/yaml.v2"
 )
 
 // The Schema Object allows the definition of input and output data types.
 type Schema struct {
-	Reference   string   `json:"$ref,omitempty" yaml:"$ref,omitempty"`
-	Title       string   `json:"title,omitempty" yaml:"title,omitempty"`
-	Description string   `json:"description,omitempty" yaml:"description,omitempty"`
-	Type        string   `json:"type,omitempty" yaml:"type,omitempty"`
-	Enum        []string `json:"enum,omitempty" yaml:"enum,omitempty"`
-	Format      string   `json:"format,omitempty" yaml:"format,omitempty"`
-	Required    []string `json:"required,omitempty" yaml:"required,omitempty"`
-	Default     string   `json:"default,omitempty" yaml:"default,omitempty"`
-	Minimum     int      `json:"minimum,omitempty" yaml:"minimum,omitempty"`
-	Maximum     int      `json:"maximum,omitempty" yaml:"maximum,omitempty"`
-	Readonly    *bool    `json:"readOnly,omitempty" yaml:"readOnly,omitempty"`
+	Reference   string   `json:"$ref,omitempty"`
+	Title       string   `json:"title,omitempty"`
+	Description string   `json:"description,omitempty"`
+	Type        string   `json:"type,omitempty"`
+	Enum        []string `json:"enum,omitempty"`
+	Format      string   `json:"format,omitempty"`
+	Required    []string `json:"required,omitempty"`
+	Default     string   `json:"default,omitempty"`
+	Minimum     int      `json:"minimum,omitempty"`
+	Maximum     int      `json:"maximum,omitempty"`
+	Readonly    *bool    `json:"readOnly,omitempty"`
 
 	// Store array items; for primitives:
 	//   "items": {"type": "string"}
 	// or custom types:
 	//   "items": {"$ref": "#/definitions/positiveInteger"},
-	Items *Schema `json:"items,omitempty" yaml:"items,omitempty"`
+	Items *Schema `json:"items,omitempty"`
 
 	// Store structs.
-	Properties map[string]*Schema `json:"properties,omitempty" yaml:"properties,omitempty"`
+	Properties map[string]*Schema `json:"properties,omitempty"`
 
 	// We will not forbid to add propreties to an struct, so instead of using
 	// the bool value, we use the schema definition
-	AdditionalProperties *Schema `json:"additionalProperties,omitempty" yaml:"additionalProperties,omitempty"`
+	AdditionalProperties *Schema `json:"additionalProperties,omitempty"`
 
-	OmitDoc      bool   `json:"-" yaml:"-"` // {omitdoc}
-	CustomSchema string `json:"-" yaml:"-"` // {schema: path}
+	OmitDoc      bool   `json:"-"` // {omitdoc}
+	CustomSchema string `json:"-"` // {schema: path}
 }
 
 // Convert a struct to a JSON schema.
@@ -647,8 +646,6 @@ func readAndUnmarshalSchemaFile(path string, target interface{}) error {
 		return fmt.Errorf("unknown file type: %q", path)
 	case ".json":
 		f = json.Unmarshal
-	case ".yaml":
-		f = yaml.Unmarshal
 	}
 	if err := f(data, target); err != nil {
 		return fmt.Errorf("unmarshal schema: %q: %v", path, err)

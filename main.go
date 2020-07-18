@@ -38,7 +38,6 @@ func start() (bool, error) {
 	addr := flag.String("serve", "", "serve HTML output on this address, instead of writing to\n"+
 		"stdout; every page load will rescan the source tree")
 	output := flag.String("output", "", `output function, valid values are:
-	openapi2-yaml        OpenAPI/Swagger 2.0 as YAML
 	openapi2-json        OpenAPI/Swagger 2.0 as JSON
 	openapi2-jsonindent  OpenAPI/Swagger 2.0 as JSON indented
 	html                 HTML documentation
@@ -70,7 +69,7 @@ func start() (bool, error) {
 	}
 
 	if prog.Config.Output == nil {
-		prog.Config.Output = openapi2.WriteYAML
+		prog.Config.Output = openapi2.WriteJSONIndent
 	}
 	if *output != "" {
 		var err error

@@ -11,10 +11,10 @@ type dontInclude struct {
 }
 
 type a struct {
-	// {schema: override.yaml}
+	// {schema: override.json}
 	Overridden json.RawMessage `json:"overridden"`
 
-	// Got a title already {schema: override.yaml}
+	// Got a title already {schema: override.json}
 	B dontInclude
 }
 

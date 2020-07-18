@@ -39,7 +39,7 @@ func TestOpenAPI2(t *testing.T) {
 		t.Run(tt.Name(), func(t *testing.T) {
 			path := "./testdata/openapi2/src/" + tt.Name()
 
-			want, err := ioutil.ReadFile(path + "/want.yaml")
+			want, err := ioutil.ReadFile(path + "/want.json")
 			if err != nil && !os.IsNotExist(err) {
 				t.Fatalf("could not read output: %v", err)
 			}
@@ -64,7 +64,7 @@ func TestOpenAPI2(t *testing.T) {
 			prog.Config.Title = "x"
 			prog.Config.Version = "x"
 			prog.Config.Packages = []string{"./testdata/openapi2/src/" + tt.Name()}
-			prog.Config.Output = openapi2.WriteYAML
+			prog.Config.Output = openapi2.WriteJSONIndent
 			prog.Config.StructTag = "json"
 
 			// Allow test to override config
