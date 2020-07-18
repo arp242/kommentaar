@@ -1,3 +1,0 @@
-x-private: true # adding
-consumes:
-  - application/xml # overriding

@@ -11,7 +11,6 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/imdario/mergo"
 	"github.com/zgoat/kommentaar/docparse"
 	"zgo.at/zstd/zgo"
 )
@@ -92,8 +91,6 @@ type (
 		Produces    []string         `json:"produces,omitempty"`
 		Parameters  []Parameter      `json:"parameters,omitempty"`
 		Responses   map[int]Response `json:"responses"`
-
-		Extend map[string]interface{} `json:"-"`
 	}
 
 	// Reference other components in the specification, internally and
@@ -121,23 +118,11 @@ func (o *Operation) toMap() (map[string]interface{}, error) {
 		return nil, fmt.Errorf("json unmarshal: %v", err)
 	}
 
-	if o.Extend != nil {
-		if err := mergo.Merge(&m, o.Extend, mergo.WithOverride); err != nil {
-			return nil, fmt.Errorf("merge extend: %v", err)
-		}
-	}
 	return m, nil
 }
 
 // MarshalJSON implements the json.Marshaler interface.
 func (o *Operation) MarshalJSON() ([]byte, error) {
-	if o.Extend == nil {
-		// no need for converting to map, use alias to avoid this method
-		// being called endlessly
-		type Alias Operation
-		return json.Marshal((*Alias)(o))
-	}
-
 	m, err := o.toMap()
 	if err != nil {
 		return nil, err
@@ -203,7 +188,6 @@ func write(outFormat string, w io.Writer, prog *docparse.Program) error {
 			OperationID: makeID(e),
 			Tags:        e.Tags,
 			Responses:   map[int]Response{},
-			Extend:      e.Extend,
 		}
 
 		// Add their tags to the top level object to ensure ordering in

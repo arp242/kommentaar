@@ -1,7 +1,5 @@
 arp242.net/sconfig v1.2.1 h1:WHjZn+LWh/at3i/64PQC8W49GgAN7CA732OTEwLvRu8=
 arp242.net/sconfig v1.2.1/go.mod h1:ocoy1e2keexW6DqO4zA7ZeMg/Pa12FOEkPKzdcfRCms=
-github.com/imdario/mergo v0.3.9 h1:UauaLniWCFHWd+Jp9oCEkTBj8VO/9DKg3PV3VCNMDIg=
-github.com/imdario/mergo v0.3.9/go.mod h1:2EnlNZ0deacrJVfApfmtdGgDfMuh/nq6Ok1EcJh5FfA=
 zgo.at/zstd v0.0.0-20200718091649-a5714a091965 h1:y/LPMwLcN2iC3tR7ssTaxAtjSbQ2rkwjG1YJ4K2fR3E=
 zgo.at/zstd v0.0.0-20200718091649-a5714a091965/go.mod h1:wSF/3tBbAJVo+RYk5CTMmSN2xxyy4C+qTb5fN4WP9iA=
 zgo.at/ztest v0.0.0-20200316134318-cfad86d80b41/go.mod h1:xGKONSdBgBNBcHRbi+yY9xFSre7ip8gRsQBS9QW/J2I=
