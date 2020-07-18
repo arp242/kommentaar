@@ -12,8 +12,8 @@ import (
 	"strings"
 
 	"github.com/imdario/mergo"
-	"github.com/teamwork/utils/goutil"
 	"github.com/zgoat/kommentaar/docparse"
+	"zgo.at/zstd/zgo"
 )
 
 type (
@@ -242,7 +242,7 @@ func write(outFormat string, w io.Writer, prog *docparse.Program) error {
 
 			for _, f := range ref.Fields {
 				// TODO: this should be done in docparse.
-				f.Name = goutil.TagName(f.KindField, "query")
+				f.Name = zgo.TagName(f.KindField, "query")
 				if f.Name == "-" {
 					continue
 				}
@@ -299,7 +299,7 @@ func write(outFormat string, w io.Writer, prog *docparse.Program) error {
 
 			for _, f := range ref.Fields {
 				// TODO: this should be done in docparse
-				f.Name = goutil.TagName(f.KindField, "form")
+				f.Name = zgo.TagName(f.KindField, "form")
 				if f.Name == "-" {
 					continue
 				}

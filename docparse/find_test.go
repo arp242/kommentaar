@@ -8,7 +8,7 @@ import (
 	"runtime"
 	"testing"
 
-	"github.com/teamwork/test"
+	"zgo.at/ztest"
 )
 
 func TestExampleDir(t *testing.T) {
@@ -119,7 +119,7 @@ func TestFindType(t *testing.T) {
 		for _, tt := range tests {
 			t.Run(tt.name, func(t *testing.T) {
 				_, _, _, err := findType(tt.inFile, tt.inPkgPath, tt.inName)
-				if !test.ErrorContains(err, tt.wantErr) {
+				if !ztest.ErrorContains(err, tt.wantErr) {
 					t.Fatalf("\nwant: %v\ngot:  %v", tt.wantErr, err)
 				}
 			})

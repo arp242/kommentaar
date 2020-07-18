@@ -13,12 +13,12 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/teamwork/utils/goutil"
+	"zgo.at/zstd/zgo"
 )
 
 // FindComments finds all comments in the given paths or packages.
 func FindComments(w io.Writer, prog *Program) error {
-	pkgPaths, err := goutil.Expand(prog.Config.Packages, build.FindOnly)
+	pkgPaths, err := zgo.Expand(prog.Config.Packages, build.FindOnly)
 	if err != nil {
 		return err
 	}
@@ -193,15 +193,15 @@ func resolvePackage(currentFile, pkgPath string) (
 	resolvedPath string, pkg *build.Package, err error,
 ) {
 	resolvedPath = pkgPath
-	pkg, err = goutil.ResolvePackage(pkgPath, 0)
+	pkg, err = zgo.ResolvePackage(pkgPath, 0)
 	if err != nil && currentFile != "" {
-		resolved, resolveErr := goutil.ResolveImport(currentFile, pkgPath)
+		resolved, resolveErr := zgo.ResolveImport(currentFile, pkgPath)
 		if resolveErr != nil {
 			return "", nil, resolveErr
 		}
 		if resolved != "" {
 			resolvedPath = resolved
-			pkg, err = goutil.ResolvePackage(resolvedPath, 0)
+			pkg, err = zgo.ResolvePackage(resolvedPath, 0)
 		}
 	}
 	if err != nil {
@@ -219,7 +219,7 @@ func getDecls(pkg *build.Package, pkgPath string) ([]declCache, error) {
 
 	dbg("getDecls: parsing dir %#v: %#v", pkg.Dir, pkg.GoFiles)
 	fset := token.NewFileSet()
-	pkgs, err := goutil.ParseFiles(fset, pkg.Dir, pkg.GoFiles, parser.ParseComments)
+	pkgs, err := zgo.ParseFiles(fset, pkg.Dir, pkg.GoFiles, parser.ParseComments)
 	if err != nil {
 		return nil, fmt.Errorf("parse error: %v", err)
 	}
@@ -422,7 +422,7 @@ func GetReference(prog *Program, context string, isEmbed bool, lookup, filePath 
 			isEmbed = true
 		}
 
-		if goutil.TagName(f, tagName) == "-" {
+		if zgo.TagName(f, tagName) == "-" {
 			continue
 		}
 		if !isEmbed {
@@ -453,7 +453,7 @@ func GetReference(prog *Program, context string, isEmbed bool, lookup, filePath 
 
 	// Add in embedded structs with a tag.
 	for _, n := range nestedTagged {
-		ename := goutil.TagName(n, tagName)
+		ename := zgo.TagName(n, tagName)
 		n.Names = []*ast.Ident{&ast.Ident{
 			Name: ename,
 		}}
@@ -503,7 +503,7 @@ start:
 
 	// Simple identifiers such as "string", "int", "MyType", etc.
 	case *ast.Ident:
-		if !goutil.PredeclaredType(typ.Name) {
+		if !zgo.PredeclaredType(typ.Name) {
 			name = typ
 		}
 
@@ -530,7 +530,7 @@ start:
 
 		// Simple identifier
 		case *ast.Ident:
-			if !goutil.PredeclaredType(elementType.Name) {
+			if !zgo.PredeclaredType(elementType.Name) {
 				name = elementType
 			}
 
@@ -558,7 +558,7 @@ start:
 
 		// Simple identifier
 		case *ast.Ident:
-			if !goutil.PredeclaredType(elementType.Name) {
+			if !zgo.PredeclaredType(elementType.Name) {
 				name = elementType
 			}
 

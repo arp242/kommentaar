@@ -9,8 +9,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/teamwork/utils/goutil"
-	"github.com/teamwork/utils/sliceutil"
+	"zgo.at/zstd/zgo"
+	"zgo.at/zstd/zstring"
 )
 
 // The Schema Object allows the definition of input and output data types.
@@ -58,7 +58,7 @@ func structToSchema(prog *Program, name, tagName string, ref Reference) (*Schema
 			return nil, fmt.Errorf("p.KindField is nil for %v", name)
 		}
 
-		name = goutil.TagName(p.KindField, tagName)
+		name = zgo.TagName(p.KindField, tagName)
 
 		if name == "-" {
 			continue
@@ -72,7 +72,7 @@ func structToSchema(prog *Program, name, tagName string, ref Reference) (*Schema
 			return nil, fmt.Errorf("cannot parse %v: %v", ref.Lookup, err)
 		}
 
-		if !sliceutil.InStringSlice([]string{"path", "query", "form"}, ref.Context) {
+		if !zstring.Contains([]string{"path", "query", "form"}, ref.Context) {
 			fixRequired(schema, prop)
 		}
 
@@ -297,7 +297,7 @@ start:
 		p.Type = "object"
 		p.Properties = map[string]*Schema{}
 		for _, f := range typ.Fields.List {
-			propName := goutil.TagName(f, tagName)
+			propName := zgo.TagName(f, tagName)
 			prop, err := fieldToSchema(prog, propName, tagName, ref, f)
 			if err != nil {
 				return nil, fmt.Errorf("anon struct: %v", err)
@@ -553,7 +553,7 @@ arrayStart:
 
 func isPrimitive(n string) bool {
 	//"null", "boolean", "object", "array", "number", "string", "integer",
-	return sliceutil.InStringSlice([]string{
+	return zstring.Contains([]string{
 		"null", "boolean", "number", "string", "integer",
 	}, n)
 }
@@ -611,7 +611,7 @@ func getTypeInfo(prog *Program, lookup, filePath string) (string, error) {
 
 // Get the canonical type.
 func canonicalType(currentFile, pkgPath string, typ *ast.Ident) (ast.Expr, error) {
-	if goutil.PredeclaredType(typ.Name) {
+	if zgo.PredeclaredType(typ.Name) {
 		return nil, nil
 	}
 

@@ -3,8 +3,8 @@ package kconfig
 import (
 	"testing"
 
-	"github.com/teamwork/test"
 	"github.com/zgoat/kommentaar/docparse"
+	"zgo.at/ztest"
 )
 
 func TestLoad(t *testing.T) {
@@ -12,8 +12,8 @@ func TestLoad(t *testing.T) {
 		name string
 		in   []byte
 	}{
-		{"example", test.Read(t, "../config.example")},
-		{"default-response", []byte(test.NormalizeIndent(`
+		{"example", ztest.Read(t, "../config.example")},
+		{"default-response", []byte(ztest.NormalizeIndent(`
 			default-response 400: github.com/zgoat/kommentaar/docparse.Param
 			default-response 404 (application/json): net/mail.Address
 		`))},
@@ -21,7 +21,7 @@ func TestLoad(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			f, clean := test.TempFile(t, string(tt.in))
+			f, clean := ztest.TempFile(t, string(tt.in))
 			defer clean()
 
 			prog := docparse.NewProgram(false)

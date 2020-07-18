@@ -5,7 +5,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/teamwork/test/diff"
+	"zgo.at/ztest"
 )
 
 func TestServe(t *testing.T) {
@@ -48,7 +48,7 @@ func TestFromFile(t *testing.T) {
 
 	rr := httptest.NewRecorder()
 	JSON(args)(rr, r)
-	d := diff.TextDiff(string(want), rr.Body.String())
+	d := ztest.Diff(string(want), rr.Body.String())
 	if d != "" {
 		t.Fatalf("wrong output\n%v", d)
 	}

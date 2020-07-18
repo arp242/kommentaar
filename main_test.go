@@ -10,11 +10,10 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/teamwork/test"
-	"github.com/teamwork/test/diff"
 	"github.com/zgoat/kommentaar/docparse"
 	"github.com/zgoat/kommentaar/kconfig"
 	"github.com/zgoat/kommentaar/openapi2"
+	"zgo.at/ztest"
 )
 
 // Just basic sanity test to make sure it doesn't error out or something.
@@ -77,12 +76,12 @@ func TestOpenAPI2(t *testing.T) {
 
 			outBuf := bytes.NewBuffer(nil)
 			err = docparse.FindComments(outBuf, prog)
-			if !test.ErrorContains(err, string(wantErr)) {
+			if !ztest.ErrorContains(err, string(wantErr)) {
 				t.Fatalf("wrong error\nout:  %v\nwant: %v", err, string(wantErr))
 			}
 			out := strings.TrimSpace(outBuf.String()) + "\n"
 
-			d := diff.TextDiff(string(want), out)
+			d := ztest.Diff(string(want), out)
 			if d != "" {
 				t.Fatalf("wrong output\n%v", d)
 			}
@@ -98,7 +97,7 @@ func TestOpenAPI2(t *testing.T) {
 				}
 				out := strings.TrimSpace(outBuf.String()) + "\n"
 
-				d := diff.TextDiff(string(wantJSON), out)
+				d := ztest.Diff(string(wantJSON), out)
 				if d != "" {
 					t.Fatalf("wrong JSON output\n%v", d)
 				}

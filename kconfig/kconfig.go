@@ -8,10 +8,10 @@ import (
 
 	"arp242.net/sconfig"
 	_ "arp242.net/sconfig/handlers/html/template" // template.HTML handler
-	"github.com/teamwork/utils/goutil"
 	"github.com/zgoat/kommentaar/docparse"
 	"github.com/zgoat/kommentaar/html"
 	"github.com/zgoat/kommentaar/openapi2"
+	"zgo.at/zstd/zgo"
 )
 
 // Load the configuration.
@@ -54,7 +54,7 @@ func Load(prog *docparse.Program, file string) error {
 
 	// Validate that MapType is a Go primitive.
 	for k, v := range prog.Config.MapTypes {
-		if !goutil.PredeclaredType(v) {
+		if !zgo.PredeclaredType(v) {
 			return fmt.Errorf("map-type '%s %s' is not a predeclared type", k, v)
 		}
 	}

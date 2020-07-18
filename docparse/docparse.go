@@ -14,9 +14,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/teamwork/utils/goutil"
-	"github.com/teamwork/utils/sliceutil"
-	"github.com/teamwork/utils/stringutil"
+	"zgo.at/zstd/zgo"
+	"zgo.at/zstd/zstring"
 )
 
 // Program is the entire program: all collected endpoints and all collected
@@ -179,7 +178,7 @@ func parseComment(prog *Program, comment, pkgPath, filePath string) ([]*Endpoint
 	e := &Endpoint{}
 
 	// Get start line and determine if this is a comment block.
-	line1 := stringutil.GetLine(comment, 1)
+	line1 := zstring.GetLine(comment, 1)
 	e.Method, e.Path, e.Tags = parseStartLine(line1)
 	if e.Method == "" {
 		return nil, 0, nil
@@ -190,7 +189,7 @@ func parseComment(prog *Program, comment, pkgPath, filePath string) ([]*Endpoint
 	start := len(line1)
 	var aliases []*Endpoint
 	for {
-		l := stringutil.GetLine(comment, i+1)
+		l := zstring.GetLine(comment, i+1)
 		method, path, tags := parseStartLine(l)
 		if method == "" {
 			break
@@ -206,7 +205,7 @@ func parseComment(prog *Program, comment, pkgPath, filePath string) ([]*Endpoint
 	}
 
 	// Determine if the next line is the "tagline" (that is, a non-blank line).
-	tagline := stringutil.GetLine(comment, i+1)
+	tagline := zstring.GetLine(comment, i+1)
 	if tagline != "" {
 		e.Tagline = strings.TrimSpace(tagline)
 		start += len(e.Tagline)
@@ -250,7 +249,7 @@ func parseComment(prog *Program, comment, pkgPath, filePath string) ([]*Endpoint
 
 					pp := PathParams(e.Path)
 					for _, p := range pathRef.Fields {
-						name := goutil.TagName(p.KindField, "path") // TODO: hardcoded path
+						name := zgo.TagName(p.KindField, "path") // TODO: hardcoded path
 						if name == "-" {
 							continue
 						}
@@ -258,7 +257,7 @@ func parseComment(prog *Program, comment, pkgPath, filePath string) ([]*Endpoint
 							name = p.Name
 						}
 
-						if !sliceutil.InStringSlice(pp, name) {
+						if !zstring.Contains(pp, name) {
 							return nil, i, fmt.Errorf("parameter %q is not in the path %q",
 								name, e.Path)
 						}
@@ -463,7 +462,7 @@ var allMethods = []string{http.MethodGet, http.MethodHead, http.MethodPost,
 // The tags are optional, and the method is case-sensitive.
 func parseStartLine(line string) (string, string, []string) {
 	words := strings.Fields(line)
-	if len(words) < 2 || !sliceutil.InStringSlice(allMethods, words[0]) {
+	if len(words) < 2 || !zstring.Contains(allMethods, words[0]) {
 		return "", "", nil
 	}
 
@@ -487,7 +486,7 @@ func parseRefValue(prog *Program, context, value, filePath string) (*Ref, error)
 
 	// {keyword}
 	if value[0] == '{' && value[len(value)-1] == '}' {
-		if !sliceutil.InStringSlice(allRefs, value) {
+		if !zstring.Contains(allRefs, value) {
 			return nil, fmt.Errorf("invalid keyword: %q", value)
 		}
 

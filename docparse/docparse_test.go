@@ -5,8 +5,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/teamwork/test"
-	"github.com/teamwork/test/diff"
+	"zgo.at/ztest"
 )
 
 func TestParseComments(t *testing.T) {
@@ -306,14 +305,14 @@ Response 400 (w00t): {empty}
 			if tt.want != nil && tt.want[0].Responses == nil {
 				tt.want[0].Responses = stdResp
 			}
-			tt.in = test.NormalizeIndent(tt.in)
+			tt.in = ztest.NormalizeIndent(tt.in)
 
 			out, _, err := parseComment(prog, tt.in, ".", "docparse.go")
-			if !test.ErrorContains(err, tt.wantErr) {
+			if !ztest.ErrorContains(err, tt.wantErr) {
 				t.Fatalf("wrong err\nout:  %#v\nwant: %#v\n", err, tt.wantErr)
 			}
 			if !reflect.DeepEqual(tt.want, out) {
-				t.Errorf("\n%v", diff.Diff(tt.want, out))
+				t.Errorf("\n%v", ztest.Diff(tt.want, out))
 			}
 		})
 	}
@@ -396,7 +395,7 @@ func TestParseParams(t *testing.T) {
 		t.Run(fmt.Sprintf("%v", i), func(t *testing.T) {
 			prog := NewProgram(false)
 			out, err := parseParams(prog, tt.in, ".")
-			if !test.ErrorContains(err, tt.wantErr) {
+			if !ztest.ErrorContains(err, tt.wantErr) {
 				t.Fatalf("wrong err\nout:  %#v\nwant: %#v\n", err, tt.wantErr)
 			}
 			if tt.wantErr == "" && !reflect.DeepEqual(tt.want, out.Params[0]) {
@@ -423,7 +422,7 @@ func TestParseParams(t *testing.T) {
 			}
 			if !reflect.DeepEqual(want, out.Params) {
 				t.Errorf("could not parse combined string:\n%v\n%v",
-					in, diff.Diff(want, out.Params))
+					in, ztest.Diff(want, out.Params))
 			}
 		})
 	}
@@ -528,7 +527,7 @@ func TestGetReference(t *testing.T) {
 		t.Run(fmt.Sprintf("%v", tt.in), func(t *testing.T) {
 			prog := NewProgram(false)
 			out, err := GetReference(prog, "req", false, tt.in, ".")
-			if !test.ErrorContains(err, tt.wantErr) {
+			if !ztest.ErrorContains(err, tt.wantErr) {
 				t.Fatalf("wrong err\nout:  %v\nwant: %v\n", err, tt.wantErr)
 			}
 
@@ -543,7 +542,7 @@ func TestGetReference(t *testing.T) {
 			}
 
 			if !reflect.DeepEqual(tt.want, out) {
-				t.Errorf("\n%v", diff.Diff(tt.want, out))
+				t.Errorf("\n%v", ztest.Diff(tt.want, out))
 			}
 		})
 	}
@@ -578,13 +577,13 @@ func TestParseResponse(t *testing.T) {
 			prog := NewProgram(false)
 			code, resp, err := ParseResponse(prog, "", tt.in)
 
-			if !test.ErrorContains(err, tt.wantErr) {
+			if !ztest.ErrorContains(err, tt.wantErr) {
 				t.Fatalf("wrong error\nwant: %v\ngot:  %v", tt.wantErr, err)
 			}
 			if code != tt.wantCode {
 				t.Errorf("wrong code\nwant: %v\ngot:  %v", tt.wantCode, code)
 			}
-			if d := diff.Diff(tt.wantResp, resp); d != "" {
+			if d := ztest.Diff(tt.wantResp, resp); d != "" {
 				t.Errorf(d)
 			}
 		})
