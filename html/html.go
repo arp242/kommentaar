@@ -17,7 +17,7 @@ var funcMap = template.FuncMap{
 	"status": func(c int) string { return http.StatusText(c) },
 	"schema": func(in interface{}) string {
 		// TODO: link ref?
-		d, err := json.Marshal(in)
+		d, err := json.MarshalIndent(in, "", "    ")
 		if err != nil {
 			return fmt.Sprintf("json.Marshal error: %v", err)
 		}
