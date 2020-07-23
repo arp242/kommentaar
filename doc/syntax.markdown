@@ -92,11 +92,6 @@ description. This is free-form text and may contain blank lines. It may be
 omitted – especially in cases where it just repeats the tagline it's not useful
 to add.
 
-Variables can be referenced as `$varname` inside the description, which is
-useful to reference a variable or constant without duplicating it. The syntax
-for this is identical to references described in *Reference directives* (`$t`,
-`$pkg.t`, or `$import/path.t`).
-
 The description will end once the first reference directive is found. The
 description cannot continue after reference directives.
 
@@ -104,7 +99,6 @@ description cannot continue after reference directives.
     verb                = "GET" / "HEAD" / "POST" / "PUT" / "PATCH" / "DELETE" / "CONNECT" / "OPTIONS" / "TRACE"
     path                = path-absolute  ; https://tools.ietf.org/html/rfc3986#section-3.3
     tag                 = *(ALPHA / DIGIT)
-    description-ref     = "$" 1*ref
 
 Full example:
 
@@ -116,8 +110,6 @@ Full example:
     later on.
 
     Adding a steering wheel or seat can be done in the PATCH request.
-
-    The default colour is $defaultColor.
 
 Reference directives
 --------------------

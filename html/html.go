@@ -209,6 +209,7 @@ var mainTpl = template.Must(template.New("mainTpl").Funcs(funcMap).Parse(`
 <body>
 	<h1>{{.Config.Title}} API documentation {{.Config.Version}}</h1>
 
+	{{/*
 	{{if .Config.Description}}<p>{{.Config.Description}}</p>{{end}}
 	{{if .Config.ContactEmail}}
 		<p>
@@ -221,13 +222,12 @@ var mainTpl = template.Must(template.New("mainTpl").Funcs(funcMap).Parse(`
 			</a> for questions.
 		</p>
 	{{end}}
+	*/}}
 
 	{{define "paramsTpl"}}
-		<ul>
-			{{range $p := .Params}}
-				<li><code class="param-name">{{$p.Name}}</code> {{$p.Info}}</li>
-			{{end}}
-		</ul>
+		<ul>{{range $p := .Params}}
+			<li><code class="param-name">{{$p.Name}}</code> {{$p.Info}}</li>
+		{{end}}</ul>
 	{{end}}
 
 	<h2>Endpoints</h2>
@@ -300,10 +300,7 @@ var mainTpl = template.Must(template.New("mainTpl").Funcs(funcMap).Parse(`
 
 	<h2>Models</h2>
 	{{range $k, $v := .References}}
-		<h3 id="{{$k}}">
-			{{$k}}
-			<a class="permalink" href="#{{$k}}">§</a>
-		</h3>
+		<h3 id="{{$k}}">{{$k}} <a class="permalink" href="#{{$k}}">§</a></h3>
 		<div class="endpoint model">
 			<p class="info">{{$v.Info}}</p>
 			{{$v.Schema|schema}}

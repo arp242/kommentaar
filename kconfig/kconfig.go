@@ -4,6 +4,7 @@ package kconfig
 import (
 	"fmt"
 	"io"
+	"strconv"
 	"strings"
 
 	"arp242.net/sconfig"
@@ -45,6 +46,20 @@ func Load(prog *docparse.Program, file string) error {
 			}
 
 			prog.Config.DefaultResponse[code] = *resp
+			return nil
+		},
+
+		"AddDefaultResponse": func(line []string) error {
+			for _, c := range line {
+				c = strings.TrimSpace(c)
+				if c != "" {
+					i, err := strconv.ParseInt(c, 10, 32)
+					if err != nil {
+						return err
+					}
+					prog.Config.AddDefaultResponse = append(prog.Config.AddDefaultResponse, int(i))
+				}
+			}
 			return nil
 		},
 	})

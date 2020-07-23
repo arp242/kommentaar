@@ -41,14 +41,15 @@ type Config struct {
 	ContactSite  string
 
 	// Defaults.
-	DefaultRequestCt  string
-	DefaultResponseCt string
-	DefaultResponse   map[int]Response
-	Prefix            string
-	Basepath          string
-	StructTag         string
-	MapTypes          map[string]string
-	MapFormats        map[string]string
+	DefaultRequestCt   string
+	DefaultResponseCt  string
+	DefaultResponse    map[int]Response
+	AddDefaultResponse []int
+	Prefix             string
+	Basepath           string
+	StructTag          string
+	MapTypes           map[string]string
+	MapFormats         map[string]string
 }
 
 // DefaultResponse references.
@@ -329,35 +330,19 @@ func parseComment(prog *Program, comment, pkgPath, filePath string) ([]*Endpoint
 
 		e.Info += line + "\n"
 	}
-
 	if len(e.Responses) == 0 {
 		return nil, 0, fmt.Errorf("%v: must have at least one response", e.Path)
 	}
 
-	// expand variables
-	var expandErr error
-	e.Info = regexp.MustCompile(`(\\)?\$[a-zA-Z0-9\.]+`).
-		ReplaceAllStringFunc(e.Info, func(m string) string {
-			if strings.HasPrefix(m, `\`) { // escaped
-				return m[1:] // strip "$"
+	if len(prog.Config.AddDefaultResponse) > 0 {
+		for _, c := range prog.Config.AddDefaultResponse {
+			_, ok := e.Responses[c]
+			if !ok {
+				e.Responses[c] = prog.Config.DefaultResponse[c]
 			}
-
-			lookup := m[1:] // strip "$"
-			name, pkg := parseLookup(lookup, filePath)
-			vs, _, _, err := findValue(filePath, pkg, name)
-			if err != nil {
-				expandErr = fmt.Errorf("%s: findValue: %v", m, err)
-				return ""
-			}
-
-			if len(vs.Values) == 0 {
-				return ""
-			}
-			return exprToString(vs.Values[0])
-		})
-	if expandErr != nil {
-		return nil, 0, expandErr
+		}
 	}
+
 	e.Info = strings.TrimSpace(e.Info)
 
 	r := make([]*Endpoint, len(aliases)+1)
@@ -563,29 +548,4 @@ func MapType(prog *Program, in string) (kind, format string) {
 	}
 
 	return kind, format
-}
-
-func exprToString(node ast.Expr) string {
-	switch n := node.(type) {
-	case *ast.BasicLit:
-		if n.Kind == token.STRING {
-			unquoted, _ := strconv.Unquote(n.Value)
-			return unquoted
-		}
-		return n.Value
-	case *ast.KeyValueExpr:
-		return exprToString(n.Key) + ": " + exprToString(n.Value)
-	case *ast.CompositeLit:
-		switch n.Type.(type) {
-		case *ast.ArrayType, *ast.MapType:
-			var v string
-			for _, e := range n.Elts {
-				v += "- " + exprToString(e) + "\n"
-			}
-			return v[:len(v)-1]
-		}
-	case *ast.Ident:
-		return n.Name
-	}
-	return ""
 }
