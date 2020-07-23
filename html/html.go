@@ -227,24 +227,20 @@ var mainTpl = template.Must(template.New("mainTpl").Funcs(funcMap).Parse(`
 	{{define "paramsTpl"}}
 		<ul>{{range $p := .Params}}
 			<li><code class="param-name">{{$p.Name}}</code> {{$p.Info}}</li>
-		{{end}}</ul>
+		{{- end}}</ul>
 	{{end}}
 
 	<h2>Endpoints</h2>
 	{{range $i, $e := .Endpoints}}
 		{{if eq $i 0}}
 			</div><div>
-			<h3 id="{{index $e.Tags 0}}" class="js-expand">
-				{{index $e.Tags 0}}
-				<a class="permalink" href="#{{index $e.Tags 0}}">§</a>
-			</h3>
-		{{else if ne (index (index $.Endpoints (add $i -1)).Tags 0) (index $e.Tags 0)}}
+			<h3 id="{{index $e.Tags 0}}" class="js-expand">{{index $e.Tags 0}}
+				<a class="permalink" href="#{{index $e.Tags 0}}">§</a></h3>
+		{{- else if ne (index (index $.Endpoints (add $i -1)).Tags 0) (index $e.Tags 0)}}
 			</div><div>
-			<h3 id="{{index $e.Tags 0}}" class="js-expand">
-				{{index $e.Tags 0}}
-				<a class="permalink" href="#{{index $e.Tags 0}}">§</a>
-			</h3>
-		{{end}}
+			<h3 id="{{index $e.Tags 0}}" class="js-expand">{{index $e.Tags 0}}
+				<a class="permalink" href="#{{index $e.Tags 0}}">§</a></h3>
+		{{- end}}
 
 		<div class="endpoint" id="{{$e.Method}}-{{$e.Path}}">
 			<div class="endpoint-top">
@@ -256,44 +252,42 @@ var mainTpl = template.Must(template.New("mainTpl").Funcs(funcMap).Parse(`
 			<div class="endpoint-info">
 				<p>{{$e.Info}}</p>
 
-				{{if $e.Request.Path}}
+				{{- if $e.Request.Path}}
 					<h4>Path parameters</h4>
 					{{/* {{template "paramsTpl" $e.Request.Path}} */}}
-				{{end}}
+				{{- end}}
 
-				{{if $e.Request.Query}}
+				{{- if $e.Request.Query}}
 					<h4>Query parameters</h4>
 					{{/* {{template "paramsTpl" $e.Request.Query}} */}}
-				{{end}}
+				{{- end}}
 
-				{{if $e.Request.Form}}
+				{{- if $e.Request.Form}}
 					<h4>Form parameters</h4>
 					{{/* {{template "paramsTpl" $e.Request.Form}} */}}
-				{{end}}
+				{{- end}}
 
-				{{if $e.Request.Body}}
+				{{- if $e.Request.Body}}
 					<h4>Request body</h4>
 					<ul>
 						<li><a href="#{{$e.Request.Body.Reference}}">{{$e.Request.Body.Reference}}</a>
 							<sup>({{$e.Request.ContentType}})</sup></li>
 					</ul>
-				{{end}}
+				{{- end}}
 
 				<h4>Responses</h4>
-				<ul>
-					{{range $code, $r := $e.Responses}}
-						<li><code class="param-name">{{$code}} {{status $code}}</code>
-							{{if $r.Body}}
-								{{if $r.Body.Reference}}
-									<a href="#{{$r.Body.Reference}}">{{$r.Body.Reference}}</a>
-								{{else}}
-									{{$r.Body.Description}}
-								{{end}}
-								<sup>({{$r.ContentType}})</sup>
-							{{end}}
-						</li>
-					{{end}}
-				</ul>
+				<ul>{{range $code, $r := $e.Responses}}
+					<li><code class="param-name">{{$code}} {{status $code}}</code>
+						{{- if $r.Body}}
+							{{- if $r.Body.Reference}}
+								<a href="#{{$r.Body.Reference}}">{{$r.Body.Reference}}</a>
+							{{- else}}
+								{{$r.Body.Description}}
+							{{- end}}
+							<sup>({{$r.ContentType}})</sup>
+						{{- end}}
+					</li>
+				{{- end}}</ul>
 			</div>
 		</div>
 	{{end}}
@@ -305,7 +299,7 @@ var mainTpl = template.Must(template.New("mainTpl").Funcs(funcMap).Parse(`
 			<p class="info">{{$v.Info}}</p>
 			{{$v.Schema|schema}}
 		</div>
-	{{end}}
+	{{- end}}
 
 	<script>
 		var add = function(endpoint) {
