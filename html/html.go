@@ -18,9 +18,14 @@ var funcMap = template.FuncMap{
 	"add":    func(a, b int) int { return a + b },
 	"status": func(c int) string { return http.StatusText(c) },
 	"schema": formatSchema,
+	"para":   para,
 }
 
 var e = template.HTMLEscapeString
+
+func para(s string) template.HTML {
+	return template.HTML("<p>" + strings.ReplaceAll(e(s), "\n\n", "</p><p>") + "</p>")
+}
 
 func formatSchema(schema *docparse.Schema) template.HTML {
 	if schema.OmitDoc {
@@ -84,7 +89,7 @@ func formatSchema(schema *docparse.Schema) template.HTML {
 
 		b.WriteString("</sup></h4>\n")
 
-		fmt.Fprintf(b, "<p>%s</p>\n", e(p.Description))
+		fmt.Fprintf(b, "%s\n", para(p.Description))
 	}
 
 	return template.HTML(b.String())
@@ -248,25 +253,21 @@ var mainTpl = template.Must(template.New("mainTpl").Funcs(funcMap).Parse(`
 				{{$e.Tagline}}
 				<a class="permalink" href="#{{$e.Method}}-{{$e.Path}}">§</a>
 			</div>
-
 			<div class="endpoint-info">
-				<p>{{$e.Info}}</p>
+				{{para $e.Info}}
 
 				{{- if $e.Request.Path}}
 					<h4>Path parameters</h4>
 					{{/* {{template "paramsTpl" $e.Request.Path}} */}}
 				{{- end}}
-
 				{{- if $e.Request.Query}}
 					<h4>Query parameters</h4>
 					{{/* {{template "paramsTpl" $e.Request.Query}} */}}
 				{{- end}}
-
 				{{- if $e.Request.Form}}
 					<h4>Form parameters</h4>
 					{{/* {{template "paramsTpl" $e.Request.Form}} */}}
 				{{- end}}
-
 				{{- if $e.Request.Body}}
 					<h4>Request body</h4>
 					<ul>
@@ -282,7 +283,7 @@ var mainTpl = template.Must(template.New("mainTpl").Funcs(funcMap).Parse(`
 							{{- if $r.Body.Reference}}
 								<a href="#{{$r.Body.Reference}}">{{$r.Body.Reference}}</a>
 							{{- else}}
-								{{$r.Body.Description}}
+								{{para $r.Body.Description}}
 							{{- end}}
 							<sup>({{$r.ContentType}})</sup>
 						{{- end}}
