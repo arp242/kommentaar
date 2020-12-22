@@ -7,6 +7,7 @@ import (
 	"go/parser"
 	"go/token"
 	"io"
+	"os"
 	"path"
 	"path/filepath"
 	"reflect"
@@ -325,8 +326,12 @@ func GetReference(prog *Program, context string, isEmbed bool, lookup, filePath 
 		// dummy StructType, we'll just be using the doc from the interface.
 		st = &ast.StructType{Fields: &ast.FieldList{}}
 	default:
-		return nil, ErrNotStruct{ts, fmt.Sprintf(
-			"%v is not a struct or interface but a %T", name, ts.Type)}
+		fmt.Fprintf(os.Stderr, "kommentaar: warning: could not process %q (maps are not supported yet)",
+			name)
+		// TODO: fix this
+		st = &ast.StructType{Fields: &ast.FieldList{}}
+		// return nil, ErrNotStruct{ts, fmt.Sprintf(
+		// 	"%v is not a struct or interface but a %T", name, ts.Type)}
 	}
 
 	ref := Reference{

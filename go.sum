@@ -4,6 +4,8 @@ zgo.at/zstd v0.0.0-20200718091649-a5714a091965 h1:y/LPMwLcN2iC3tR7ssTaxAtjSbQ2rk
 zgo.at/zstd v0.0.0-20200718091649-a5714a091965/go.mod h1:wSF/3tBbAJVo+RYk5CTMmSN2xxyy4C+qTb5fN4WP9iA=
 zgo.at/zstd v0.0.0-20200718115135-a1fc42b2004d h1:lL6ou0lYeRjsQ+Aj863Cg//IloDHbcegn7D1RafXkRg=
 zgo.at/zstd v0.0.0-20200718115135-a1fc42b2004d/go.mod h1:wSF/3tBbAJVo+RYk5CTMmSN2xxyy4C+qTb5fN4WP9iA=
+zgo.at/zstd v0.0.0-20201219074540-1bdc62c5acc9 h1:buNAIg5jaamsvWh52LIj45zAW/1dGy6y0aWS1N5hM4s=
+zgo.at/zstd v0.0.0-20201219074540-1bdc62c5acc9/go.mod h1:bQqcOgaRPCBT7lZ52Ksg9GF1xwi0L97E3AyvW3oGJYE=
 zgo.at/ztest v0.0.0-20200316134318-cfad86d80b41/go.mod h1:xGKONSdBgBNBcHRbi+yY9xFSre7ip8gRsQBS9QW/J2I=
 zgo.at/ztest v0.0.0-20200630024640-d19d80ca68af h1:R4x8P0jEUonoCtK3OGMVJ1Iwq7oMqJDSyBvw8r8b+Zk=
 zgo.at/ztest v0.0.0-20200630024640-d19d80ca68af/go.mod h1:xGKONSdBgBNBcHRbi+yY9xFSre7ip8gRsQBS9QW/J2I=

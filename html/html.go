@@ -237,7 +237,7 @@ var mainTpl = template.Must(template.New("mainTpl").Funcs(funcMap).Parse(`
 
 	<h2>Endpoints</h2>
 	{{range $i, $e := .Endpoints}}
-		{{if eq $i 0}}
+		{{- if eq $i 0}}
 			</div><div>
 			<h3 id="{{index $e.Tags 0}}" class="js-expand">{{index $e.Tags 0}}
 				<a class="permalink" href="#{{index $e.Tags 0}}">§</a></h3>
@@ -291,7 +291,7 @@ var mainTpl = template.Must(template.New("mainTpl").Funcs(funcMap).Parse(`
 				{{- end}}</ul>
 			</div>
 		</div>
-	{{end}}
+	{{- end}}
 
 	<h2>Models</h2>
 	{{range $k, $v := .References}}
