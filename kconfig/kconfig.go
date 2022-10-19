@@ -7,11 +7,11 @@ import (
 	"strconv"
 	"strings"
 
-	"arp242.net/sconfig"
-	_ "arp242.net/sconfig/handlers/html/template" // template.HTML handler
 	"zgo.at/kommentaar/docparse"
 	"zgo.at/kommentaar/html"
 	"zgo.at/kommentaar/openapi2"
+	"zgo.at/sconfig"
+	_ "zgo.at/sconfig/handlers/html/template" // template.HTML handler
 	"zgo.at/zstd/zgo"
 )
 

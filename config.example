@@ -1,7 +1,7 @@
 # vim:ft=config
 #
 # Kommentaar is configured with a sconfig configuration file. See
-# https://arp242.net/code/sconfig for a full description of the syntax, the
+# https://github.com/arp242/sconfig for a full description of the syntax, the
 # short of it is:
 #
 # - `#` are for comments
