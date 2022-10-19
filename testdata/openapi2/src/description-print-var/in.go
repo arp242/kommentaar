@@ -16,7 +16,7 @@ var (
 		"a": "b",
 		"c": "d",
 	}
-	kv2 = map[string]interface{}{
+	kv2 = map[string]any{
 		"int":   1,
 		"bool":  true,
 		"false": false,
@@ -39,7 +39,7 @@ var (
 // map[string]string:
 // $kv
 //
-// map[string]interface{}:
+// map[string]any:
 // $kv2
 //
 // I'm escaped \$foo

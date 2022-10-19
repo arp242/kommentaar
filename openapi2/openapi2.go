@@ -12,7 +12,7 @@ import (
 	"strings"
 
 	"zgo.at/kommentaar/docparse"
-	"zgo.at/zstd/zgo"
+	"zgo.at/kommentaar/zgo"
 )
 
 type (
@@ -106,14 +106,14 @@ type (
 	}
 )
 
-func (o *Operation) toMap() (map[string]interface{}, error) {
+func (o *Operation) toMap() (map[string]any, error) {
 	type Alias Operation
 	data, err := json.Marshal((*Alias)(o))
 	if err != nil {
 		return nil, fmt.Errorf("json marshal: %v", err)
 	}
 
-	m := map[string]interface{}{}
+	m := map[string]any{}
 	if err := json.Unmarshal(data, &m); err != nil {
 		return nil, fmt.Errorf("json unmarshal: %v", err)
 	}

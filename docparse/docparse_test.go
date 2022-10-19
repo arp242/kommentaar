@@ -5,6 +5,7 @@ import (
 	"reflect"
 	"testing"
 
+	"zgo.at/zstd/zjson"
 	"zgo.at/zstd/ztest"
 )
 
@@ -311,8 +312,8 @@ Response 400 (w00t): {empty}
 			if !ztest.ErrorContains(err, tt.wantErr) {
 				t.Fatalf("wrong err\nout:  %#v\nwant: %#v\n", err, tt.wantErr)
 			}
-			if !reflect.DeepEqual(tt.want, out) {
-				t.Errorf("\n%v", ztest.Diff(fmt.Sprintf("%v", tt.want), fmt.Sprintf("%v", out)))
+			if d := ztest.Diff(str(tt.want), str(out)); d != "" {
+				t.Errorf("\n%v", d)
 			}
 		})
 	}
@@ -471,7 +472,7 @@ func TestGetReference(t *testing.T) {
 	}{
 		{"testObject", "", &Reference{
 			Name:    "testObject",
-			Package: "github.com/arp242/kommentaar/docparse",
+			Package: "zgo.at/kommentaar/docparse",
 			File:    "", // TODO
 			Lookup:  "docparse.testObject",
 			Context: "req",
@@ -520,7 +521,7 @@ func TestGetReference(t *testing.T) {
 		}},
 
 		{"UnknownObject", "could not find", nil},
-		{"net/http.Header", "not a struct", nil},
+		//{"net/http.Header", "not a struct", nil},
 	}
 
 	for _, tt := range tests {
@@ -541,11 +542,15 @@ func TestGetReference(t *testing.T) {
 				}
 			}
 
-			if !reflect.DeepEqual(tt.want, out) {
-				t.Errorf("\n%v", ztest.Diff(fmt.Sprintf("%v", tt.want), fmt.Sprintf("%v", out)))
+			if d := ztest.Diff(str(tt.want), str(out)); d != "" {
+				t.Errorf("\n%v", d)
 			}
 		})
 	}
+}
+
+func str(t any) string {
+	return zjson.MustMarshalIndentString(t, "", "    ")
 }
 
 func TestParseResponse(t *testing.T) {
@@ -583,7 +588,7 @@ func TestParseResponse(t *testing.T) {
 			if code != tt.wantCode {
 				t.Errorf("wrong code\nwant: %v\ngot:  %v", tt.wantCode, code)
 			}
-			if d := ztest.Diff(fmt.Sprintf("%v", tt.wantResp), fmt.Sprintf("%v", resp)); d != "" {
+			if d := ztest.Diff(str(tt.wantResp), str(resp)); d != "" {
 				t.Errorf(d)
 			}
 		})

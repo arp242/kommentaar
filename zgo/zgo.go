@@ -2,7 +2,6 @@
 package zgo
 
 import (
-	"errors"
 	"fmt"
 	"go/ast"
 	"go/build"
@@ -14,6 +13,9 @@ import (
 	"reflect"
 	"sort"
 	"strings"
+
+	"golang.org/x/tools/go/packages"
+	"zgo.at/errors"
 )
 
 // Expand a list of package and/or directory names to Go package names.
@@ -69,15 +71,25 @@ func ResolvePackage(path string, mode build.ImportMode) (pkg *build.Package, err
 		return nil, errors.New("cannot resolve empty string")
 	}
 
+	// XXX: quickfix for modules.
+	{
+		pkgs, err := packages.Load(nil, path)
+		if err == nil && len(pkgs) > 0 {
+			path = pkgs[0].PkgPath
+		}
+	}
+
 	switch path[0] {
 	case '/':
 		pkg, err = build.ImportDir(path, mode)
+		err = errors.Wrapf(err, "build.ImportDir %q", path)
 	case '.':
 		path, err = filepath.Abs(path)
 		if err != nil {
 			return nil, err
 		}
 		pkg, err = build.ImportDir(path, mode)
+		err = errors.Wrapf(err, "build.ImportDir %q", path)
 	default:
 		if cwd == "" {
 			cwd, err = os.Getwd()
@@ -86,12 +98,12 @@ func ResolvePackage(path string, mode build.ImportMode) (pkg *build.Package, err
 			}
 		}
 		pkg, err = build.Import(path, cwd, mode)
+		err = errors.Wrapf(err, "build.Import %q from dir %q", path, cwd)
 	}
 	if err != nil {
 		return nil, err
 	}
-
-	return pkg, err
+	return pkg, nil
 }
 
 // ResolveWildcard finds all subpackages in the "example/..." format. The
@@ -284,7 +296,8 @@ func PredeclaredType(n string) bool {
 	switch n {
 	case "bool", "byte", "complex64", "complex128", "error", "float32",
 		"float64", "int", "int8", "int16", "int32", "int64", "rune", "string",
-		"uint", "uint8", "uint16", "uint32", "uint64", "uintptr":
+		"uint", "uint8", "uint16", "uint32", "uint64", "uintptr",
+		"any", "comparable":
 		return true
 	default:
 		return false

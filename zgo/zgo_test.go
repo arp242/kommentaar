@@ -52,7 +52,7 @@ func TestExpand(t *testing.T) {
 		},
 		//{
 		//	[]string{"."},
-		//	[]string{"zgo.at/zstd/zgo"},
+		//	[]string{"zgo.at/kommentaar/zgo"},
 		//	"",
 		//},
 		//{

@@ -84,7 +84,7 @@ func TestFindType(t *testing.T) {
 		if ts.Name.Name != "Foo" {
 			t.Fatalf("ts.Name.Name == %v", ts.Name.Name)
 		}
-		if pkg != "github.com/arp242/kommentaar/example/exampleimport" {
+		if pkg != "zgo.at/kommentaar/example/exampleimport" {
 			t.Fatalf("pkg == %v", pkg)
 		}
 		p, _ := filepath.Abs("./../example/exampleimport/exampleimport.go")
@@ -107,12 +107,12 @@ func TestFindType(t *testing.T) {
 			{
 				"nopkg",
 				"", "asdasd", "qwewqe",
-				`cannot find package "asdasd" in any of`,
+				`could not resolve package`,
 			},
 			{
 				"notfound",
 				"../example/example.go", "exampleimport", "doesntexist",
-				`could not find type "doesntexist" in package "github.com/zgoat/kommentaar/example/exampleimport"`,
+				`could not find type "doesntexist" in package "zgo.at/kommentaar/example/exampleimport"`,
 			},
 		}
 

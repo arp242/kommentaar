@@ -195,6 +195,7 @@ func resolvePackage(currentFile, pkgPath string) (
 ) {
 	resolvedPath = pkgPath
 	pkg, err = zgo.ResolvePackage(pkgPath, 0)
+
 	if err != nil && currentFile != "" {
 		resolved, resolveErr := zgo.ResolveImport(currentFile, pkgPath)
 		if resolveErr != nil {
@@ -326,7 +327,7 @@ func GetReference(prog *Program, context string, isEmbed bool, lookup, filePath 
 		// dummy StructType, we'll just be using the doc from the interface.
 		st = &ast.StructType{Fields: &ast.FieldList{}}
 	default:
-		fmt.Fprintf(os.Stderr, "kommentaar: warning: could not process %q (maps are not supported yet)",
+		fmt.Fprintf(os.Stderr, "kommentaar: warning: could not process %q (maps are not supported yet)\n",
 			name)
 		// TODO: fix this
 		st = &ast.StructType{Fields: &ast.FieldList{}}
@@ -497,6 +498,7 @@ func findNested(prog *Program, context string, isEmbed bool, f *ast.Field, fileP
 	var name *ast.Ident
 
 	sw := f.Type
+
 start:
 	switch typ := sw.(type) {
 

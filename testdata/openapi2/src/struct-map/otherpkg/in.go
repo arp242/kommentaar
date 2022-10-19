@@ -1,7 +1,7 @@
 package otherpkg
 
 // No docs from here, it doesn't have its own definition.
-type MyMap map[int64]map[string]interface{}
+type MyMap map[int64]map[string]any
 
 // OtherStruct is a struct in another package.
 type OtherStruct struct {

@@ -10,9 +10,9 @@ import (
 	"zgo.at/kommentaar/docparse"
 	"zgo.at/kommentaar/html"
 	"zgo.at/kommentaar/openapi2"
+	"zgo.at/kommentaar/zgo"
 	"zgo.at/sconfig"
 	_ "zgo.at/sconfig/handlers/html/template" // template.HTML handler
-	"zgo.at/zstd/zgo"
 )
 
 // Load the configuration.

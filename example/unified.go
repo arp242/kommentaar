@@ -7,7 +7,7 @@ type entityResponse struct {
 	Entity entity `json:"entity"`
 
 	// The requested sideloaded data.
-	Include map[string]interface{} `json:"include"`
+	Include map[string]any `json:"include"`
 }
 
 // some entity

@@ -13,7 +13,7 @@ import (
 	"strconv"
 	"strings"
 
-	"zgo.at/zstd/zgo"
+	"zgo.at/kommentaar/zgo"
 	"zgo.at/zstd/zstring"
 )
 
@@ -83,7 +83,7 @@ func NewProgram(dbg bool) *Program {
 
 var printDebug bool
 
-func dbg(s string, a ...interface{}) {
+func dbg(s string, a ...any) {
 	if printDebug {
 		_, _ = fmt.Fprintf(os.Stderr, "\x1b[38;5;244mdbg docparse: "+s+"\x1b[0m\n", a...)
 	}

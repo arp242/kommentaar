@@ -9,7 +9,7 @@ import (
 	"strconv"
 	"strings"
 
-	"zgo.at/zstd/zgo"
+	"zgo.at/kommentaar/zgo"
 	"zgo.at/zstd/zstring"
 )
 
@@ -636,13 +636,13 @@ func canonicalType(currentFile, pkgPath string, typ *ast.Ident) (ast.Expr, error
 	return ts.Type, nil
 }
 
-func readAndUnmarshalSchemaFile(path string, target interface{}) error {
+func readAndUnmarshalSchemaFile(path string, target any) error {
 	data, err := ioutil.ReadFile(path)
 	if err != nil {
 		return fmt.Errorf("could not read file %q: %v", path, err)
 	}
 
-	var f func([]byte, interface{}) error
+	var f func([]byte, any) error
 	switch strings.ToLower(filepath.Ext(path)) {
 	default:
 		return fmt.Errorf("unknown file type: %q", path)

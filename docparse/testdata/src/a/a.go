@@ -1,4 +1,3 @@
-// nolint
 package a
 
 import "net/mail"

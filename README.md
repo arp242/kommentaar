@@ -127,7 +127,7 @@ Kommentaar is designed to strike a reasonable balance:
 
 - Makes *some* assumptions about your code (e.g. that you're returning a
   `struct`), but not many, and rewriting existing code (e.g. handlers returning
-  a `map[string]interface{}`) should be straightforward.
+  a `map[string]any`) should be straightforward.
 
 - Syntax is straightforward and easy to read and write.
 

@@ -30,7 +30,7 @@ paths:
         - a: b
         - c: d
 
-        map[string]interface{}:
+        map[string]any:
         - int: 1
         - bool: true
         - false: false
