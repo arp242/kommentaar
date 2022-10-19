@@ -10,7 +10,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/zgoat/kommentaar/docparse"
+	"zgo.at/kommentaar/docparse"
 	"zgo.at/zstd/zstring"
 )
 

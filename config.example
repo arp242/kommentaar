@@ -12,11 +12,10 @@
 
 # Set output format; can be overridden with the -output commandline option.
 #
-# openapi2-yaml        OpenAPI/Swagger 2.0 as YAML
 # openapi2-json        OpenAPI/Swagger 2.0 as JSON
 # openapi2-jsonindent  OpenAPI/Swagger 2.0 as JSON indented
 # html                 HTML documentation
-output openapi2-yaml
+output openapi2-jsonindent
 
 # Packages to scan by default; can be overridden from the commandline.
 # Will default to current directory if omitted.

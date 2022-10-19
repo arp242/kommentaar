@@ -4,7 +4,7 @@ package example
 import (
 	"fmt"
 
-	"github.com/zgoat/kommentaar/example/exampleimport"
+	"zgo.at/kommentaar/example/exampleimport"
 )
 
 // POST /foo/{id} foobar

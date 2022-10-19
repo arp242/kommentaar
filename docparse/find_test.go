@@ -8,7 +8,7 @@ import (
 	"runtime"
 	"testing"
 
-	"zgo.at/ztest"
+	"zgo.at/zstd/ztest"
 )
 
 func TestExampleDir(t *testing.T) {
@@ -84,7 +84,7 @@ func TestFindType(t *testing.T) {
 		if ts.Name.Name != "Foo" {
 			t.Fatalf("ts.Name.Name == %v", ts.Name.Name)
 		}
-		if pkg != "github.com/zgoat/kommentaar/example/exampleimport" {
+		if pkg != "github.com/arp242/kommentaar/example/exampleimport" {
 			t.Fatalf("pkg == %v", pkg)
 		}
 		p, _ := filepath.Abs("./../example/exampleimport/exampleimport.go")

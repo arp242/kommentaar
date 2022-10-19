@@ -1,5 +1,3 @@
-[![GoDoc](https://godoc.org/github.com/zgoat/kommentaar?status.svg)](https://godoc.org/github.com/zgoat/kommentaar)
-
 Kommentaar generates documentation for Go APIs.
 
 The primary focus is currently on [OpenAPI](https://github.com/OAI/OpenAPI-Specification)
@@ -25,25 +23,28 @@ Using the tool
 
 Install it:
 
-    $ go get github.com/zgoat/kommentaar
+    $ go get zgo.at/kommentaar
 
 Parse one package:
 
-    $ kommentaar github.com/teamwork/desk/api/v1/inboxController
+    $ kommentaar zgo.at/goatcounter/v2/handlers
 
 Or several packages:
 
-    $ kommentaar github.com/teamwork/desk/api/...
+    $ kommentaar zgo.at/goatcounter/v2/...
 
-The default output is as an OpenAPI 2 YAML file. You can generate a HTML page
+The default output is as an OpenAPI 2 JSON file. You can generate a HTML page
 with `-output html`, or directly serve it with `-output html -serve :8080`. When
 serving the documentation it will rescan the source tree on every page load,
 making development/proofreading easier.
 
 See `kommentaar -h` for the full list of options.
 
-You can also the [Go API](https://godoc.org/github.com/zgoat/kommentaar), for
-example to serve documentation in an HTTP endpoint.
+You can also the [Go API], for example to serve documentation in an HTTP
+endpoint.
+
+[Go API]: https://godocs.io/zgo.at/kommentaar
+
 
 Syntax
 ------

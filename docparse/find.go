@@ -14,7 +14,7 @@ import (
 	"sort"
 	"strings"
 
-	"zgo.at/zstd/zgo"
+	"zgo.at/kommentaar/zgo"
 )
 
 // FindComments finds all comments in the given paths or packages.

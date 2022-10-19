@@ -154,7 +154,7 @@ func setTags(name, fName string, p *Schema, tags []string) error {
 			switch {
 			case strings.HasPrefix(t, "enum: "):
 				p.Type = "enum"
-				for _, e := range strings.Split(t[5:], " ") {
+				for _, e := range strings.Split(strings.ReplaceAll(t, "\n", " "), " ") {
 					e = strings.TrimSpace(e)
 					if e != "" {
 						p.Enum = append(p.Enum, e)

@@ -9,9 +9,9 @@ import (
 
 	"arp242.net/sconfig"
 	_ "arp242.net/sconfig/handlers/html/template" // template.HTML handler
-	"github.com/zgoat/kommentaar/docparse"
-	"github.com/zgoat/kommentaar/html"
-	"github.com/zgoat/kommentaar/openapi2"
+	"zgo.at/kommentaar/docparse"
+	"zgo.at/kommentaar/html"
+	"zgo.at/kommentaar/openapi2"
 	"zgo.at/zstd/zgo"
 )
 

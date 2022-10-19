@@ -5,7 +5,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"zgo.at/ztest"
+	"zgo.at/zstd/ztest"
 )
 
 func TestServe(t *testing.T) {

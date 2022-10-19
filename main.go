@@ -8,9 +8,9 @@ import (
 	"runtime"
 	"runtime/pprof"
 
-	"github.com/zgoat/kommentaar/docparse"
-	"github.com/zgoat/kommentaar/kconfig"
-	"github.com/zgoat/kommentaar/openapi2"
+	"zgo.at/kommentaar/docparse"
+	"zgo.at/kommentaar/kconfig"
+	"zgo.at/kommentaar/openapi2"
 )
 
 func main() {

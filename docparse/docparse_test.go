@@ -5,7 +5,7 @@ import (
 	"reflect"
 	"testing"
 
-	"zgo.at/ztest"
+	"zgo.at/zstd/ztest"
 )
 
 func TestParseComments(t *testing.T) {
@@ -312,7 +312,7 @@ Response 400 (w00t): {empty}
 				t.Fatalf("wrong err\nout:  %#v\nwant: %#v\n", err, tt.wantErr)
 			}
 			if !reflect.DeepEqual(tt.want, out) {
-				t.Errorf("\n%v", ztest.Diff(tt.want, out))
+				t.Errorf("\n%v", ztest.Diff(fmt.Sprintf("%v", tt.want), fmt.Sprintf("%v", out)))
 			}
 		})
 	}
@@ -471,7 +471,7 @@ func TestGetReference(t *testing.T) {
 	}{
 		{"testObject", "", &Reference{
 			Name:    "testObject",
-			Package: "github.com/zgoat/kommentaar/docparse",
+			Package: "github.com/arp242/kommentaar/docparse",
 			File:    "", // TODO
 			Lookup:  "docparse.testObject",
 			Context: "req",
@@ -542,7 +542,7 @@ func TestGetReference(t *testing.T) {
 			}
 
 			if !reflect.DeepEqual(tt.want, out) {
-				t.Errorf("\n%v", ztest.Diff(tt.want, out))
+				t.Errorf("\n%v", ztest.Diff(fmt.Sprintf("%v", tt.want), fmt.Sprintf("%v", out)))
 			}
 		})
 	}
@@ -583,7 +583,7 @@ func TestParseResponse(t *testing.T) {
 			if code != tt.wantCode {
 				t.Errorf("wrong code\nwant: %v\ngot:  %v", tt.wantCode, code)
 			}
-			if d := ztest.Diff(tt.wantResp, resp); d != "" {
+			if d := ztest.Diff(fmt.Sprintf("%v", tt.wantResp), fmt.Sprintf("%v", resp)); d != "" {
 				t.Errorf(d)
 			}
 		})

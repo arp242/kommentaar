@@ -9,10 +9,10 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/zgoat/kommentaar/docparse"
-	"github.com/zgoat/kommentaar/html"
-	"github.com/zgoat/kommentaar/kconfig"
-	"github.com/zgoat/kommentaar/openapi2"
+	"zgo.at/kommentaar/docparse"
+	"zgo.at/kommentaar/html"
+	"zgo.at/kommentaar/kconfig"
+	"zgo.at/kommentaar/openapi2"
 )
 
 // Args for the HTTP handlers.

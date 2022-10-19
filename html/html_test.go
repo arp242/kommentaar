@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"testing"
 
-	"github.com/zgoat/kommentaar/docparse"
+	"zgo.at/kommentaar/docparse"
 )
 
 func TestHTML(t *testing.T) {

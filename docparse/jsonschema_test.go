@@ -6,7 +6,7 @@ import (
 	"go/build"
 	"testing"
 
-	"zgo.at/ztest"
+	"zgo.at/zstd/ztest"
 )
 
 func TestFieldToProperty(t *testing.T) {
@@ -64,7 +64,7 @@ func TestFieldToProperty(t *testing.T) {
 						t.Fatalf("no test case for %v", name)
 					}
 
-					if d := ztest.Diff(w, out); d != "" {
+					if d := ztest.Diff(fmt.Sprintf("%v", w), fmt.Sprintf("%v", out)); d != "" {
 						t.Errorf("%v", d)
 					}
 				})

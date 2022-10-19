@@ -10,10 +10,10 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/zgoat/kommentaar/docparse"
-	"github.com/zgoat/kommentaar/kconfig"
-	"github.com/zgoat/kommentaar/openapi2"
-	"zgo.at/ztest"
+	"zgo.at/kommentaar/docparse"
+	"zgo.at/kommentaar/kconfig"
+	"zgo.at/kommentaar/openapi2"
+	"zgo.at/zstd/ztest"
 )
 
 // Just basic sanity test to make sure it doesn't error out or something.
