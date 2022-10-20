@@ -39,6 +39,7 @@ type Config struct {
 	ContactName  string
 	ContactEmail string
 	ContactSite  string
+	Auth         string
 
 	// Defaults.
 	DefaultRequestCt   string

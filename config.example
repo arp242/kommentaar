@@ -35,6 +35,9 @@ version 1.0
 #contact-email
 #contact-site
 
+# Authentication to use; currently only supports 'basic' for HTTP Basic auth.
+#auth basic
+
 # Set the default Content-Type for requests and responses; this means that
 # writing:
 #

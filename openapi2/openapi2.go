@@ -21,6 +21,10 @@ type (
 		Swagger string `json:"swagger"`
 		Info    Info   `json:"info"`
 
+		// TODO: hacked on :-/
+		SecurityDefinitions map[string]any   `json:"securityDefinitions,omitempty"`
+		Security            []map[string]any `json:"security,omitempty"`
+
 		// TODO: do we need this? will have to come from config
 		Host     string   `json:"host,omitempty"`
 		BasePath string   `json:"basePath,omitempty"`
@@ -158,6 +162,19 @@ func write(outFormat string, w io.Writer, prog *docparse.Program) error {
 		Produces:    []string{prog.Config.DefaultRequestCt},
 		Paths:       map[string]*Path{},
 		Definitions: map[string]docparse.Schema{},
+	}
+
+	// Auth info
+	switch prog.Config.Auth {
+	default:
+		return fmt.Errorf("unknown auth value: %q", prog.Config.Auth)
+	case "basic":
+		out.SecurityDefinitions = map[string]any{
+			"basicAuth": map[string]any{"type": "basic"},
+		}
+		out.Security = []map[string]any{
+			{"basicAuth": []string{}},
+		}
 	}
 
 	// Add definitions.

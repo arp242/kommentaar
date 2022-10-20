@@ -305,16 +305,18 @@ var mainTpl = template.Must(template.New("mainTpl").Funcs(funcMap).Parse(`
 	<script>
 		var add = function(endpoint) {
 			// Expand row on click.
-			var topLine = endpoint.getElementsByClassName('endpoint-top')[0]
-			var info = endpoint.getElementsByClassName('endpoint-info')[0]
-			topLine.addEventListener('click', function(e) {
-				if (e.target.className === 'permalink')
-					return
+			var topLine = endpoint.getElementsByClassName('endpoint-top')[0],
+			    info    = endpoint.getElementsByClassName('endpoint-info')[0]
+			if (topLine) {
+				topLine.addEventListener('click', function(e) {
+					if (e.target.className === 'permalink')
+						return
 
-				e.preventDefault()
-				//for (var i = 0; i < topLine.length; i++)
-				info.style.display = info.style.display === 'block' ? '' : 'block'
-			})
+					e.preventDefault()
+					//for (var i = 0; i < topLine.length; i++)
+					info.style.display = info.style.display === 'block' ? '' : 'block'
+				})
+			}
 
 			// Prevent text selection on double click.
 			//endpoint.addEventListener('mousedown', function(e) {
@@ -383,9 +385,9 @@ func ServeHTML(addr string) func(io.Writer, *docparse.Program) error {
 				return
 			}
 
-			for _, e := range prog.Endpoints {
-				if len(e.Tags) == 0 {
-					e.Tags = []string{"untagged"}
+			for i := range prog.Endpoints {
+				if len(prog.Endpoints[i].Tags) == 0 {
+					prog.Endpoints[i].Tags = []string{"untagged"}
 				}
 			}
 

@@ -187,6 +187,11 @@ func setTags(name, fName string, p *Schema, tags []string) error {
 					p.Maximum = int(n)
 				}
 			default:
+				// TODO: errors out here if you use commas: {enum a, b, c}
+				//
+				//   unknown parameter property for "ref_scheme": "g"
+				//
+				// It should error out, but with a better error.
 				return fmt.Errorf("unknown parameter property for %#v: %#v",
 					name, t)
 			}
