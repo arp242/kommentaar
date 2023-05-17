@@ -343,12 +343,16 @@ func write(outFormat string, w io.Writer, prog *docparse.Program) error {
 		// haven't been specified manually in e.Request.Path.
 		if strings.Contains(e.Path, "{") && e.Request.Path == nil {
 			for _, param := range docparse.PathParams(e.Path) {
+				// TODO: allow setting this type; this is a bit of a hack
+				t := "string"
+				if p := strings.ToLower(param); p == "id" || strings.HasSuffix(p, "_id") {
+					t = "integer"
+				}
 				param = strings.Trim(param, "{}")
 				op.Parameters = append(op.Parameters, Parameter{
-					Name: param,
-					In:   "path",
-					Type: "integer",
-					//Format:   "int64",
+					Name:     param,
+					In:       "path",
+					Type:     t,
 					Required: true,
 				})
 			}

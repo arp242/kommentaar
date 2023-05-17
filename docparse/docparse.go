@@ -431,7 +431,8 @@ var allMethods = []string{http.MethodGet, http.MethodHead, http.MethodPost,
 	http.MethodOptions, http.MethodTrace}
 
 // Get the first "start line" of a documentation block:
-//   POST /path tag1 tag2
+//
+//	POST /path tag1 tag2
 //
 // The tags are optional, and the method is case-sensitive.
 func parseStartLine(line string) (string, string, []string) {
